@@ -350,6 +350,8 @@ st.markdown("""
 
 # ─── KPI Strip (parchment tile) ───────────────────────────────────────────────
 st.markdown('<div class="tile-light">', unsafe_allow_html=True)
+st.markdown('<div class="section-tagline">주요 지표 요약</div>', unsafe_allow_html=True)
+
 st.markdown(f"""
 <div class="kpi-grid">
   <div class="kpi-card">
@@ -433,7 +435,7 @@ fig_lolp.update_layout(
     font=dict(family='Inter'),
 )
 st.plotly_chart(fig_lolp, use_container_width=True, config={'displayModeBar': False})
-st.markdown('14일 내 LOLP 예측 확률</div>', unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
 
 # ─── Simulation Section (light tile) ──────────────────────────────────────────
 st.markdown('<div class="tile-light">', unsafe_allow_html=True)
@@ -484,8 +486,9 @@ with col_sim:
         <span class="sim-key">절감 효과</span>
         <span class="sim-val blue">{saving:.1f}억 ({saving_pct}%↓)</span>
       </div>
-      <div style="text-align:center">
-        <span class="recommend-pill">AI 권고: 생산량 {selected['optimal_production']}%로 조정</span>
+      <div class="sim-row">
+        <span class="sim-key">AI 권고</span>
+        <span class="sim-val yellow">생산량 {selected['optimal_production']}%로 조정</span>
       </div>
     </div>
     """, unsafe_allow_html=True)
