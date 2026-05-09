@@ -343,12 +343,13 @@ st.markdown("""
 st.markdown("""
 <div class="hero-section">
   <span class="hero-title">전력 수급 리스크 예측 대시보드</span>
-  <span class="hero-subtitle">2024.07.01 — 2024.07.14 · 14일 분석</span>
+  <span class="hero-subtitle"><br>2024.07.01 — 2024.07.14 · 14일 분석</span>
 </div>
 """, unsafe_allow_html=True)
 
 
 # ─── KPI Strip (parchment tile) ───────────────────────────────────────────────
+st.markdown('<div class="tile-light">', unsafe_allow_html=True)
 st.markdown(f"""
 <div class="kpi-grid">
   <div class="kpi-card">
