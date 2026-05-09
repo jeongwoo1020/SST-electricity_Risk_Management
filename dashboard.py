@@ -7,8 +7,7 @@ from plotly.subplots import make_subplots
 
 # ─── Page Config ────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="⚡ 전력 수급 리스크 예측 대시보드",
-    page_icon="⚡",
+    page_title="전력 수급 리스크 예측 대시보드",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
@@ -342,9 +341,9 @@ st.markdown("""
 
 # ─── Sub Nav ──────────────────────────────────────────────────────────────────
 st.markdown("""
-<div class="sub-nav">
-  <span class="sub-nav-title">전력 수급 리스크 예측 대시보드</span>
-  <span class="sub-nav-meta">2024.07.01 — 2024.07.14 · 14일 분석</span>
+<div class="hero-section">
+  <span class="hero-title">전력 수급 리스크 예측 대시보드</span>
+  <span class="hero-subtitle">2024.07.01 — 2024.07.14 · 14일 분석</span>
 </div>
 """, unsafe_allow_html=True)
 
@@ -377,7 +376,10 @@ st.markdown(f"""
 st.markdown('</div>', unsafe_allow_html=True)
 
 # ─── 7-Day Forecast  ───────────────────────────────────────────────
-st.markdown('<div class="section-tagline-dark">7일 간 전력 위험 LOLP 예측 확률</div>', unsafe_allow_html=True)
+st.markdown('<div class="tile-light">', unsafe_allow_html=True)
+st.markdown('<div class="section-headline">전력 위험 확률</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-tagline">7일 간 전력 위험 LOLP 확률을 예측합니다</div>', unsafe_allow_html=True)
+
 
 # Build forecast cards (first 7 rows)
 forecast_7 = df.head(7)
@@ -532,7 +534,7 @@ st.markdown('</div>', unsafe_allow_html=True)
 # ─── Optimal Production Section ─────────────────────────────────
 st.markdown('<div class="tile-light">', unsafe_allow_html=True)
 st.markdown('<div class="section-headline">최적 생산량 권고</div>', unsafe_allow_html=True)
-st.markdown('<div class="section-tagline">Expected Loss 최소화 기반 일별 생산량 조정 권고</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-tagline">Expected Loss 최소화 기반 일별 생산량 조정 권고입니다</div>', unsafe_allow_html=True)
 
 col_prod, col_cum = st.columns([1, 1])
 with col_prod:
@@ -607,6 +609,7 @@ st.markdown('</div>', unsafe_allow_html=True)
 # ─── NDBI Insurance Section (light tile) ─────────────────────────────────────
 st.markdown('<div class="tile-light">', unsafe_allow_html=True)
 st.markdown('<div class="section-headline">🛡 NDBI 보험금 추정</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-tagline">NDBI 트리거에 따른 보험금 산출을 추정합니다</div>', unsafe_allow_html=True)
 
 col_ndbi, col_ndbi2 = st.columns([1, 1])
 with col_ndbi:
