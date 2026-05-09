@@ -330,32 +330,30 @@ ndbi_payout       = round(df.loc[df['prob_lolp'] >= TRIGGER_THRESHOLD, 'saving_�
 # ─── Global Nav ───────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="global-nav">
-  <span class="nav-brand">⚡ PowerRisk</span>
-  <span class="nav-meta">XGBoost LOLP 예측 시스템 · v2.0</span>
+  <span class="nav-brand">SST-Electricity Risk Management</span>
+  <span class="nav-meta">XGBoost LOLP 예측 기반 기업 손실 시뮬레이션</span>
 </div>
 """, unsafe_allow_html=True)
 
 # ─── Sub Nav ──────────────────────────────────────────────────────────────────
-st.markdown("""
-<div class="sub-nav">
-  <span class="sub-nav-title">전력 수급 리스크 예측 대시보드</span>
-  <span class="sub-nav-meta">2024.07.01 — 2024.07.14 · 14일 분석</span>
-</div>
-""", unsafe_allow_html=True)
+# st.markdown("""
+# <div class="sub-nav">
+#   <span class="sub-nav-title">전력 수급 리스크 예측 대시보드</span>
+#   <span class="sub-nav-meta">2024.07.01 — 2024.07.14 · 14일 분석</span>
+# </div>
+# """, unsafe_allow_html=True)
 
 # ─── Hero Section ─────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="hero-section">
-  <div class="hero-title">전력 위험, 하루 앞서<br>준비하세요.</div>
-  <div class="hero-subtitle">XGBoost LOLP 예측 기반 기업 손실 시뮬레이션 & 생산량 최적화</div>
   <span class="hero-date-pill">2024년 7월 여름철 예측 보고서</span>
 </div>
 """, unsafe_allow_html=True)
 
 # ─── KPI Strip (parchment tile) ───────────────────────────────────────────────
-st.markdown('<div class="tile-parchment">', unsafe_allow_html=True)
-st.markdown('<div class="section-headline">핵심 요약</div>', unsafe_allow_html=True)
-st.markdown('<div class="section-tagline">14일간 전력 수급 리스크 예측 결과</div>', unsafe_allow_html=True)
+# st.markdown('<div class="tile-parchment">', unsafe_allow_html=True)
+# st.markdown('<div class="section-headline">핵심 요약</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-tagline">2024.07.01 — 2024.07.14 · 14일 전력 수급 리스크 예측 결과</div>', unsafe_allow_html=True)
 
 st.markdown(f"""
 <div class="kpi-grid">
@@ -383,10 +381,8 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
-# ─── 7-Day Forecast (dark tile) ───────────────────────────────────────────────
-st.markdown('<div class="tile-dark">', unsafe_allow_html=True)
-st.markdown('<div class="section-headline-dark">📡 앞으로 7일 전력 위험 예보</div>', unsafe_allow_html=True)
-st.markdown('<div class="section-tagline-dark">기상청처럼 직관적으로 — LOLP 예측 확률 일별 예보</div>', unsafe_allow_html=True)
+# ─── 7-Day Forecast ───────────────────────────────────────────────
+st.markdown('<div class="section-tagline-dark">7일 간 전력 위험 LOLP 예측 확률</div>', unsafe_allow_html=True)
 
 # Build forecast cards (first 7 rows)
 forecast_7 = df.head(7)
@@ -442,9 +438,9 @@ st.plotly_chart(fig_lolp, use_container_width=True, config={'displayModeBar': Fa
 st.markdown('</div>', unsafe_allow_html=True)
 
 # ─── Simulation Section (light tile) ──────────────────────────────────────────
-st.markdown('<div class="tile-light">', unsafe_allow_html=True)
+# st.markdown('<div class="tile-light">', unsafe_allow_html=True)
 st.markdown('<div class="section-headline">🏭 기업 손실 시뮬레이션</div>', unsafe_allow_html=True)
-st.markdown('<div class="section-tagline">날짜를 선택해 해당일 권고 이행 효과를 확인하세요</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-tagline">선택 일시의 권고 이행 효과를 확인하세요</div>', unsafe_allow_html=True)
 
 # Date selector
 col_sel, col_info = st.columns([2, 3])
@@ -488,10 +484,10 @@ with col_sim:
       </div>
       <div class="sim-row">
         <span class="sim-key">절감 효과</span>
-        <span class="sim-val blue">↓ {saving:.1f}억 ({saving_pct}%↓)</span>
+        <span class="sim-val blue">{saving:.1f}억 ({saving_pct}%↓)</span>
       </div>
       <div style="text-align:center">
-        <span class="recommend-pill">💡 권고: 생산량 {selected['optimal_production']}%로 조정</span>
+        <span class="recommend-pill">AI 권고: 생산량 {selected['optimal_production']}%로 조정</span>
       </div>
     </div>
     """, unsafe_allow_html=True)
@@ -539,8 +535,6 @@ with col_chart:
 st.markdown('</div>', unsafe_allow_html=True)
 
 # ─── Optimal Production Section (dark-2 tile) ─────────────────────────────────
-st.markdown('<div class="tile-dark-2">', unsafe_allow_html=True)
-st.markdown('<div class="section-headline-dark">⚙️ 최적 생산량 권고</div>', unsafe_allow_html=True)
 st.markdown('<div class="section-tagline-dark">Expected Loss 최소화 기반 일별 생산량 조정 권고</div>', unsafe_allow_html=True)
 
 col_prod, col_cum = st.columns([1, 1])
@@ -616,7 +610,6 @@ st.markdown('</div>', unsafe_allow_html=True)
 # ─── NDBI Insurance Section (light tile) ─────────────────────────────────────
 st.markdown('<div class="tile-light">', unsafe_allow_html=True)
 st.markdown('<div class="section-headline">🛡 NDBI 보험금 추정</div>', unsafe_allow_html=True)
-st.markdown('<div class="section-tagline">날씨 파생 사업중단보험 — LOLP 기반 트리거 자동 산출</div>', unsafe_allow_html=True)
 
 col_ndbi, col_ndbi2 = st.columns([1, 1])
 with col_ndbi:
@@ -677,22 +670,11 @@ with col_ndbi2:
 
 st.markdown('</div>', unsafe_allow_html=True)
 
-# ─── Full Data Table (parchment tile) ─────────────────────────────────────────
-with st.expander("📋 전체 데이터 테이블 보기", expanded=False):
-    st.markdown('<div style="background:#f5f5f7; padding:24px; border-radius:18px;">', unsafe_allow_html=True)
-    display_df = df.copy()
-    display_df['date'] = display_df['date'].dt.strftime('%Y-%m-%d')
-    display_df.columns = ['날짜', 'SST(°C)', '예비율(%)', 'LOLP', '위험단계', '위험명', '아이콘', '권고생산량(%)', '권고손실(억)', '유지손실(억)', '절감액(억)']
-    st.dataframe(display_df, use_container_width=True, hide_index=True)
-    st.markdown('</div>', unsafe_allow_html=True)
-
 # ─── Footer ───────────────────────────────────────────────────────────────────
 st.markdown(f"""
 <div class="apple-footer">
   <div class="footer-body">
-    Copyright © 2024 PowerRisk Analytics. All rights reserved.<br>
-    본 대시보드는 XGBoost LOLP 예측 모델 기반 시뮬레이션 결과입니다. 실제 투자·보험 의사결정에는 전문가 검토가 필요합니다.<br>
-    모델 AUC ≥ 0.85 · ECE 보정 완료 · SMOTE 클래스 불균형 보정 적용
+    본 대시보드는 XGBoost LOLP 예측 모델 기반 시뮬레이션 결과입니다.
   </div>
 </div>
 """, unsafe_allow_html=True)
