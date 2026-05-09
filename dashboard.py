@@ -117,19 +117,24 @@ st.markdown("""
   /* ── Section tiles ───────────────────────────────────────────────────────── */
   .tile-light {
     background: #fff;
-    padding: 80px 48px;
+    padding: 64px 64px;
   }
   .tile-parchment {
     background: #f5f5f7;
-    padding: 80px 48px;
+    padding: 64px 64px;
   }
   .tile-dark {
     background: #272729;
-    padding: 80px 48px;
+    padding: 64px 64px;
   }
   .tile-dark-2 {
     background: #2a2a2c;
-    padding: 80px 48px;
+    padding: 64px 64px;
+  }
+
+  /* ── Chart wrapper — 좌우 패딩 ──────────────────────────────────────────── */
+  .chart-wrap {
+    padding: 0 16px;
   }
 
   /* ── Section Headlines ───────────────────────────────────────────────────── */
@@ -351,8 +356,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ─── KPI Strip (parchment tile) ───────────────────────────────────────────────
-# st.markdown('<div class="tile-parchment">', unsafe_allow_html=True)
-# st.markdown('<div class="section-headline">핵심 요약</div>', unsafe_allow_html=True)
+st.markdown('<div class="tile-parchment">', unsafe_allow_html=True)
 st.markdown('<div class="section-tagline">2024.07.01 — 2024.07.14 · 14일 전력 수급 리스크 예측 결과</div>', unsafe_allow_html=True)
 
 st.markdown(f"""
@@ -381,7 +385,9 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
-# ─── 7-Day Forecast ───────────────────────────────────────────────
+# ─── 7-Day Forecast (dark tile) ───────────────────────────────────────────────
+st.markdown('<div class="tile-dark">', unsafe_allow_html=True)
+st.markdown('<div class="section-headline-dark">📡 앞으로 7일 전력 위험 예보</div>', unsafe_allow_html=True)
 st.markdown('<div class="section-tagline-dark">7일 간 전력 위험 LOLP 예측 확률</div>', unsafe_allow_html=True)
 
 # Build forecast cards (first 7 rows)
@@ -416,21 +422,21 @@ fig_lolp.add_trace(go.Bar(
     marker_line_width=1,
     text=[f"{v:.0%}" for v in df['prob_lolp']],
     textposition='outside',
-    textfont=dict(color='white', size=11, family='Inter'),
+    textfont=dict(color='#1d1d1f', size=11, family='Inter'),
     hovertemplate='<b>%{x}</b><br>LOLP: %{y:.1%}<extra></extra>',
 ))
-fig_lolp.add_hline(y=0.70, line_dash='dash', line_color='#ff3b30', line_width=1.5, annotation_text='위험 기준 0.7', annotation_font_color='#ff3b30')
-fig_lolp.add_hline(y=0.30, line_dash='dash', line_color='#ffc400', line_width=1.5, annotation_text='주의 기준 0.3', annotation_font_color='#ffc400')
-fig_lolp.add_hrect(y0=0.70, y1=1.05, fillcolor='rgba(255,59,48,0.05)', line_width=0)
-fig_lolp.add_hrect(y0=0.30, y1=0.70, fillcolor='rgba(255,196,0,0.04)', line_width=0)
+fig_lolp.add_hline(y=0.70, line_dash='dash', line_color='#111111', line_width=2, annotation_text='위험 기준 0.7', annotation_font_color='#111111')
+fig_lolp.add_hline(y=0.30, line_dash='dash', line_color='#555555', line_width=1.5, annotation_text='주의 기준 0.3', annotation_font_color='#555555')
+fig_lolp.add_hrect(y0=0.70, y1=1.05, fillcolor='rgba(255,59,48,0.07)', line_width=0)
+fig_lolp.add_hrect(y0=0.30, y1=0.70, fillcolor='rgba(255,196,0,0.05)', line_width=0)
 fig_lolp.update_layout(
     paper_bgcolor='rgba(0,0,0,0)',
-    plot_bgcolor='#1a1a1c',
+    plot_bgcolor='#ffffff',
     height=280,
-    margin=dict(l=0, r=0, t=10, b=10),
+    margin=dict(l=24, r=24, t=10, b=10),
     showlegend=False,
-    xaxis=dict(showgrid=False, tickfont=dict(color='#cccccc', size=11), color='#cccccc'),
-    yaxis=dict(showgrid=True, gridcolor='rgba(255,255,255,0.06)', tickformat='.0%', tickfont=dict(color='#cccccc', size=11), range=[0, 1.12]),
+    xaxis=dict(showgrid=False, tickfont=dict(color='#1d1d1f', size=11), color='#1d1d1f', linecolor='#e0e0e0'),
+    yaxis=dict(showgrid=True, gridcolor='rgba(0,0,0,0.08)', tickformat='.0%', tickfont=dict(color='#1d1d1f', size=11), range=[0, 1.12]),
     bargap=0.25,
     font=dict(family='Inter'),
 )
@@ -438,7 +444,7 @@ st.plotly_chart(fig_lolp, use_container_width=True, config={'displayModeBar': Fa
 st.markdown('</div>', unsafe_allow_html=True)
 
 # ─── Simulation Section (light tile) ──────────────────────────────────────────
-# st.markdown('<div class="tile-light">', unsafe_allow_html=True)
+st.markdown('<div class="tile-light">', unsafe_allow_html=True)
 st.markdown('<div class="section-headline">🏭 기업 손실 시뮬레이션</div>', unsafe_allow_html=True)
 st.markdown('<div class="section-tagline">선택 일시의 권고 이행 효과를 확인하세요</div>', unsafe_allow_html=True)
 
@@ -523,7 +529,7 @@ with col_chart:
         plot_bgcolor='rgba(0,0,0,0)',
         barmode='group',
         height=300,
-        margin=dict(l=0, r=0, t=10, b=10),
+        margin=dict(l=24, r=24, t=10, b=10),
         legend=dict(font=dict(color='#1d1d1f', size=12), bgcolor='rgba(0,0,0,0)'),
         xaxis=dict(showgrid=False, tickfont=dict(color='#7a7a7a', size=10)),
         yaxis=dict(showgrid=True, gridcolor='rgba(0,0,0,0.06)', tickfont=dict(color='#7a7a7a', size=10), title='예상 손실 (억원)', title_font=dict(color='#7a7a7a', size=11)),
@@ -535,6 +541,8 @@ with col_chart:
 st.markdown('</div>', unsafe_allow_html=True)
 
 # ─── Optimal Production Section (dark-2 tile) ─────────────────────────────────
+st.markdown('<div class="tile-dark-2">', unsafe_allow_html=True)
+st.markdown('<div class="section-headline-dark">⚙️ 최적 생산량 권고</div>', unsafe_allow_html=True)
 st.markdown('<div class="section-tagline-dark">Expected Loss 최소화 기반 일별 생산량 조정 권고</div>', unsafe_allow_html=True)
 
 col_prod, col_cum = st.columns([1, 1])
@@ -545,24 +553,24 @@ with col_prod:
         x=df['date'].dt.strftime('%m/%d'),
         y=df['optimal_production'],
         mode='lines+markers+text',
-        line=dict(color='#2997ff', width=2.5),
-        marker=dict(size=10, color=prod_colors, line=dict(color='white', width=2)),
+        line=dict(color='#2997ff', width=3),
+        marker=dict(size=11, color=prod_colors, line=dict(color='white', width=2.5)),
         text=[f"{v}%" for v in df['optimal_production']],
         textposition='top center',
-        textfont=dict(color='white', size=10),
+        textfont=dict(color='#ffffff', size=11, family='Inter'),
         fill='tozeroy',
-        fillcolor='rgba(41,151,255,0.12)',
+        fillcolor='rgba(41,151,255,0.25)',
         hovertemplate='%{x}<br>권고 생산량: %{y}%<extra></extra>',
     ))
-    fig_prod.add_hline(y=100, line_dash='dot', line_color='rgba(255,255,255,0.3)', annotation_text='현재 100%', annotation_font_color='rgba(255,255,255,0.5)')
+    fig_prod.add_hline(y=100, line_dash='dot', line_color='rgba(255,255,255,0.5)', annotation_text='현재 100%', annotation_font_color='rgba(255,255,255,0.7)')
     fig_prod.update_layout(
         paper_bgcolor='rgba(0,0,0,0)',
-        plot_bgcolor='rgba(42,42,44,0.6)',
+        plot_bgcolor='#2a2a2c',
         height=300,
-        margin=dict(l=0, r=0, t=10, b=10),
+        margin=dict(l=24, r=24, t=10, b=10),
         showlegend=False,
-        xaxis=dict(showgrid=False, tickfont=dict(color='#cccccc', size=10)),
-        yaxis=dict(showgrid=True, gridcolor='rgba(255,255,255,0.06)', tickfont=dict(color='#cccccc', size=10), range=[0, 125], title='권고 생산량 (%)', title_font=dict(color='#cccccc', size=11)),
+        xaxis=dict(showgrid=False, tickfont=dict(color='#cccccc', size=10), linecolor='rgba(255,255,255,0.1)'),
+        yaxis=dict(showgrid=True, gridcolor='rgba(255,255,255,0.10)', tickfont=dict(color='#cccccc', size=10), range=[0, 125], title='권고 생산량 (%)', title_font=dict(color='#cccccc', size=11)),
         font=dict(family='Inter'),
     )
     st.plotly_chart(fig_prod, use_container_width=True, config={'displayModeBar': False})
@@ -595,12 +603,12 @@ with col_cum:
     )
     fig_cum.update_layout(
         paper_bgcolor='rgba(0,0,0,0)',
-        plot_bgcolor='rgba(42,42,44,0.6)',
+        plot_bgcolor='#2a2a2c',
         height=300,
-        margin=dict(l=0, r=0, t=10, b=10),
+        margin=dict(l=24, r=24, t=10, b=10),
         showlegend=False,
         xaxis=dict(showgrid=False, tickfont=dict(color='#cccccc', size=10)),
-        yaxis=dict(showgrid=True, gridcolor='rgba(255,255,255,0.06)', tickfont=dict(color='#cccccc', size=10), title='누적 절감액 (억원)', title_font=dict(color='#cccccc', size=11)),
+        yaxis=dict(showgrid=True, gridcolor='rgba(255,255,255,0.10)', tickfont=dict(color='#cccccc', size=10), title='누적 절감액 (억원)', title_font=dict(color='#cccccc', size=11)),
         font=dict(family='Inter'),
     )
     st.plotly_chart(fig_cum, use_container_width=True, config={'displayModeBar': False})
@@ -660,7 +668,7 @@ with col_ndbi2:
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
         height=320,
-        margin=dict(l=0, r=0, t=10, b=10),
+        margin=dict(l=24, r=24, t=10, b=10),
         showlegend=False,
         xaxis=dict(showgrid=True, gridcolor='rgba(0,0,0,0.06)', tickformat='.0%', tickfont=dict(color='#7a7a7a', size=10), title='LOLP 예측 확률', title_font=dict(color='#7a7a7a', size=11)),
         yaxis=dict(showgrid=True, gridcolor='rgba(0,0,0,0.06)', tickfont=dict(color='#7a7a7a', size=10), title='절감 가능액 (억원)', title_font=dict(color='#7a7a7a', size=11)),
