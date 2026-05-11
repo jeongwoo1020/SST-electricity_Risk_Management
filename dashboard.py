@@ -232,7 +232,7 @@ st.markdown("""
   /* ── Simulation Box ──────────────────────────────────────────────────────── */
   .sim-box {
     margin: 0 0 0 16px;
-    height: 280px;  
+    height: 320px;  
     box-sizing: border-box;
     background: #1a1a1c;
     border-radius: 18px;
@@ -264,7 +264,7 @@ st.markdown("""
   /* ── NDBI Card ────────────────────────────────────────────────────────────── */
   .ndbi-card {
     margin: 0 0 0 16px;
-    height: 320px;
+    height: 100%;
     box-sizing: border-box;
     background: #fff;
     border-radius: 18px;
@@ -524,7 +524,7 @@ with col_chart:
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
         barmode='group',
-        height=280,
+        height=320,
         # margin=dict(l=24, r=24, t=10, b=10),
         margin=dict(l=24, r=24, t=4, b=4),
         legend=dict(font=dict(color='#1d1d1f', size=12), bgcolor='rgba(0,0,0,0)'),
