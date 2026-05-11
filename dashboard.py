@@ -231,7 +231,7 @@ st.markdown("""
 
   /* ── Simulation Box ──────────────────────────────────────────────────────── */
   .sim-box {
-    margin: 0 0 0 16px;
+    margin: 0;
     height: 340px;
     box-sizing: border-box;
     background: #1a1a1c;
@@ -453,8 +453,8 @@ st.markdown('<div class="tile-light">', unsafe_allow_html=True)
 st.markdown('<div class="section-headline">기업 손실 시뮬레이션</div>', unsafe_allow_html=True)
 st.markdown('<div class="section-tagline">선택 일시의 권고 이행 효과를 확인하세요</div>', unsafe_allow_html=True)
 
-# 날짜 선택기 — 패딩 컬럼 포함
-_lp, col_sel, col_info, _rp = st.columns([P, 1.5, 3.2, P])
+# 날짜 선택기 — sim-box 왼쪽 경계(P + 0.05)에 맞춤
+_lp, _sim_pad, col_sel, col_info, _rp = st.columns([P, 0.05, 1.45, 3.2, P])
 with col_sel:
     date_options = df['date'].dt.strftime('%m/%d (%a)').tolist()
     selected_idx = st.selectbox(
@@ -478,8 +478,8 @@ with col_info:
     </div>
     """, unsafe_allow_html=True)
 
-# 시뮬레이션 박스 + 차트 — 패딩 컬럼 포함
-_lp, col_sim, col_chart, _rp = st.columns([P, 1, 1, P])
+# 시뮬레이션 박스 + 차트 — sim_pad로 왼쪽 경계 맞춤
+_lp, _sim_pad, col_sim, col_chart, _rp = st.columns([P, 0.05, 1, 1, P])
 saving = selected['saving_억']
 saving_pct = round((1 - selected['optimal_loss_억'] / selected['maintain_loss_억']) * 100) if selected['maintain_loss_억'] > 0 else 0
 
