@@ -232,7 +232,7 @@ st.markdown("""
   /* ── Simulation Box ──────────────────────────────────────────────────────── */
   .sim-box {
     margin: 0 0 0 16px;
-    height: 320px;  
+    height: 340px;  
     box-sizing: border-box;
     background: #1a1a1c;
     border-radius: 18px;
@@ -524,7 +524,7 @@ with col_chart:
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
         barmode='group',
-        height=320,
+        height=340,
         # margin=dict(l=24, r=24, t=10, b=10),
         margin=dict(l=24, r=24, t=4, b=4),
         legend=dict(font=dict(color='#1d1d1f', size=12), bgcolor='rgba(0,0,0,0)'),
@@ -665,7 +665,7 @@ with col_ndbi2:
     fig_ndbi.update_layout(
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
-        height=320,
+        height=480,
         # margin=dict(l=24, r=24, t=10, b=10),
         margin=dict(l=24, r=24, t=4, b=4),
         showlegend=False,
@@ -675,6 +675,7 @@ with col_ndbi2:
     )
     st.plotly_chart(fig_ndbi, use_container_width=True, config={'displayModeBar': False})
 
+st.markdown('<div style="height: 40px;"></div>', unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
 # ─── Footer ───────────────────────────────────────────────────────────────────
