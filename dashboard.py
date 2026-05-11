@@ -7,7 +7,7 @@ from plotly.subplots import make_subplots
 
 # ─── Page Config ────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="전력 수급 리스크 예측 대시보드",
+    page_title="Electricity Supply Risk Prediction Dashboard",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
@@ -131,7 +131,7 @@ st.markdown("""
     padding: 64px 64px;
   }
 
-  /* ── Chart wrapper — 좌우 패딩 ──────────────────────────────────────────── */
+  /* ── Chart wrapper — horizontal padding ────────────────────────────────── */
   .chart-wrap {
     padding: 0 16px;
   }
@@ -331,21 +331,21 @@ trigger_rate  = trigger_days / len(df)
 ndbi_payout   = round(df.loc[df['prob_lolp'] >= TRIGGER_THRESHOLD, 'saving_억'].sum() * INSURANCE_COVERAGE, 1)
 color_map     = {0: '#34c759', 1: '#ffc400', 2: '#ff3b30'}
 
-P = 0.1  # 좌우 패딩 컬럼 비율
+P = 0.1  # left/right padding column ratio
 
 # ─── Global Nav ───────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="global-nav">
   <span class="nav-brand">SST-Electricity Risk Management</span>
-  <span class="nav-meta">XGBoost LOLP 예측 기반 기업 손실 시뮬레이션</span>
+  <span class="nav-meta">XGBoost LOLP Prediction · Enterprise Loss Simulation</span>
 </div>
 """, unsafe_allow_html=True)
 
 # ─── Hero ─────────────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="hero-section">
-  <span class="hero-title">전력 수급 리스크 예측 대시보드</span>
-  <span class="hero-subtitle"><br>2024.07.01 — 2024.07.14 · 14일 분석</span>
+  <span class="hero-title">Electricity Supply Risk Prediction Dashboard</span>
+  <span class="hero-subtitle"><br>2024.07.01 — 2024.07.14 · 14-Day Analysis</span>
 </div>
 """, unsafe_allow_html=True)
 
@@ -354,31 +354,31 @@ st.markdown("""
 # KPI Strip
 # ════════════════════════════════════════════════════════════════════
 st.markdown('<div class="tile-light">', unsafe_allow_html=True)
-st.markdown('<div class="section-tagline">주요 지표 요약</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-tagline">Key Metrics Summary</div>', unsafe_allow_html=True)
 
 _lp, _mid, _rp = st.columns([P, 1 - P * 2, P])
 with _mid:
     st.markdown(f"""
     <div class="kpi-grid">
       <div class="kpi-card">
-        <div class="kpi-label">평균 LOLP</div>
+        <div class="kpi-label">Average LOLP</div>
         <div class="kpi-value">{avg_lolp:.0%}</div>
-        <div class="kpi-sub">예측 기간 평균 위험 확률</div>
+        <div class="kpi-sub">Avg. risk probability over forecast period</div>
       </div>
       <div class="kpi-card">
-        <div class="kpi-label">위험일 / 주의일 / 정상일</div>
-        <div class="kpi-value" style="color:#ff3b30">{danger_days}일</div>
-        <div class="kpi-sub">주의 {caution_days}일 &nbsp;·&nbsp; <span>정상 {safe_days}일</span></div>
+        <div class="kpi-label">High / Caution / Normal Days</div>
+        <div class="kpi-value" style="color:#ff3b30">{danger_days}d</div>
+        <div class="kpi-sub">Caution {caution_days}d &nbsp;·&nbsp; <span>Normal {safe_days}d</span></div>
       </div>
       <div class="kpi-card">
-        <div class="kpi-label">총 절감 가능 손실</div>
-        <div class="kpi-value" style="color:#1a8a35">{total_saving:.0f}억</div>
-        <div class="kpi-sub">권고 이행 시 절감액</div>
+        <div class="kpi-label">Total Reducible Loss</div>
+        <div class="kpi-value" style="color:#1a8a35">₩{total_saving:.0f}B</div>
+        <div class="kpi-sub">Savings if recommendation followed</div>
       </div>
       <div class="kpi-card">
-        <div class="kpi-label">최고 위험일</div>
+        <div class="kpi-label">Peak Risk Day</div>
         <div class="kpi-value">{peak_row['date'].strftime('%m/%d')}</div>
-        <div class="kpi-sub">LOLP {peak_row['prob_lolp']:.0%} · 위험</div>
+        <div class="kpi-sub">LOLP {peak_row['prob_lolp']:.0%} · High Risk</div>
       </div>
     </div>
     """, unsafe_allow_html=True)
@@ -390,10 +390,10 @@ st.markdown('</div>', unsafe_allow_html=True)
 # 7-Day Forecast + LOLP Chart
 # ════════════════════════════════════════════════════════════════════
 st.markdown('<div class="tile-light">', unsafe_allow_html=True)
-st.markdown('<div class="section-headline">전력 위험 확률</div>', unsafe_allow_html=True)
-st.markdown('<div class="section-tagline">7일 간 전력 위험 LOLP 확률을 예측합니다</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-headline">Power Risk Forecast</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-tagline">7-day LOLP risk probability forecast</div>', unsafe_allow_html=True)
 
-# forecast 카드 — HTML margin으로 패딩
+# forecast cards — HTML margin padding
 forecast_7 = df.head(7)
 cards_html = '<div class="forecast-grid">'
 for _, row in forecast_7.iterrows():
@@ -409,7 +409,7 @@ cards_html += '</div>'
 st.markdown(cards_html, unsafe_allow_html=True)
 st.markdown('<br>', unsafe_allow_html=True)
 
-# LOLP 바 차트 — 0.1 패딩 컬럼
+# LOLP bar chart — 0.1 padding columns
 bar_colors = [color_map[l] for l in df['risk_level']]
 fig_lolp = go.Figure()
 fig_lolp.add_trace(go.Bar(
@@ -424,9 +424,9 @@ fig_lolp.add_trace(go.Bar(
     hovertemplate='<b>%{x}</b><br>LOLP: %{y:.1%}<extra></extra>',
 ))
 fig_lolp.add_hline(y=0.70, line_dash='dash', line_color='#111111', line_width=2,
-                   annotation_text='위험 기준 0.7', annotation_font_color='#111111')
+                   annotation_text='High Risk Threshold 0.7', annotation_font_color='#111111')
 fig_lolp.add_hline(y=0.30, line_dash='dash', line_color='#555555', line_width=1.5,
-                   annotation_text='주의 기준 0.3', annotation_font_color='#555555')
+                   annotation_text='Caution Threshold 0.3', annotation_font_color='#555555')
 fig_lolp.add_hrect(y0=0.70, y1=1.05, fillcolor='rgba(255,59,48,0.07)', line_width=0)
 fig_lolp.add_hrect(y0=0.30, y1=0.70, fillcolor='rgba(255,196,0,0.05)', line_width=0)
 fig_lolp.update_layout(
@@ -447,38 +447,38 @@ st.markdown('</div>', unsafe_allow_html=True)
 
 
 # ════════════════════════════════════════════════════════════════════
-# 기업 손실 시뮬레이션
+# Enterprise Loss Simulation
 # ════════════════════════════════════════════════════════════════════
 st.markdown('<div class="tile-light">', unsafe_allow_html=True)
-st.markdown('<div class="section-headline">기업 손실 시뮬레이션</div>', unsafe_allow_html=True)
-st.markdown('<div class="section-tagline">선택 일시의 권고 이행 효과를 확인하세요</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-headline">Enterprise Loss Simulation</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-tagline">Check the effect of following the recommendation for the selected date</div>', unsafe_allow_html=True)
 
-# 날짜 선택기 — sim-box 왼쪽 경계(P + 0.05)에 맞춤
+# Date selector — aligned to sim-box left edge (P + 0.05)
 _lp, _sim_pad, col_sel, col_info, _rp = st.columns([P, 0.05, 1.45, 3.2, P])
 with col_sel:
     date_options = df['date'].dt.strftime('%m/%d (%a)').tolist()
     selected_idx = st.selectbox(
-        "날짜 선택",
+        "Select Date",
         range(len(date_options)),
         format_func=lambda i: date_options[i],
         index=int(df['prob_lolp'].idxmax()),
         label_visibility='collapsed',
     )
 selected = df.iloc[selected_idx]
-level_labels = {2: '🔴 위험', 1: '🟡 주의', 0: '🟢 정상'}
+level_labels = {2: '🔴 High Risk', 1: '🟡 Caution', 0: '🟢 Normal'}
 level_colors  = {2: '#ff3b30', 1: '#ffc400', 0: '#34c759'}
 
 with col_info:
     st.markdown(f"""
     <div style="font-size:14px; color:#7a7a7a; font-family:Inter; padding:8px 0;">
-      선택된 날짜: <strong style="color:#1d1d1f">{selected['date'].strftime('%Y년 %m월 %d일')}</strong>
-      &nbsp;·&nbsp; 위험 등급: <strong style="color:{level_colors[selected['risk_level']]}">{level_labels[selected['risk_level']]}</strong>
+      Selected Date: <strong style="color:#1d1d1f">{selected['date'].strftime('%Y-%m-%d')}</strong>
+      &nbsp;·&nbsp; Risk Level: <strong style="color:{level_colors[selected['risk_level']]}">{level_labels[selected['risk_level']]}</strong>
       &nbsp;·&nbsp; SST: <strong style="color:#1d1d1f">{selected['sst']}°C</strong>
-      &nbsp;·&nbsp; 예비율: <strong style="color:#1d1d1f">{selected['reserve_rate']}%</strong>
+      &nbsp;·&nbsp; Reserve Rate: <strong style="color:#1d1d1f">{selected['reserve_rate']}%</strong>
     </div>
     """, unsafe_allow_html=True)
 
-# 시뮬레이션 박스 + 차트 — sim_pad로 왼쪽 경계 맞춤
+# Simulation box + chart — left edge aligned with sim_pad
 _lp, _sim_pad, col_sim, col_chart, _rp = st.columns([P, 0.05, 1, 1, P])
 saving = selected['saving_억']
 saving_pct = round((1 - selected['optimal_loss_억'] / selected['maintain_loss_억']) * 100) if selected['maintain_loss_억'] > 0 else 0
@@ -486,22 +486,22 @@ saving_pct = round((1 - selected['optimal_loss_억'] / selected['maintain_loss_�
 with col_sim:
     st.markdown(f"""
     <div class="sim-box">
-      <div class="sim-title">위험 확률 {selected['prob_lolp']:.0%} 기준</div>
+      <div class="sim-title">Risk Probability: {selected['prob_lolp']:.0%}</div>
       <div class="sim-row">
-        <span class="sim-key">AI 권고</span>
-        <span class="sim-val">생산량 {selected['optimal_production']}%로 조정</span>
+        <span class="sim-key">AI Recommendation</span>
+        <span class="sim-val">Adjust production to {selected['optimal_production']}%</span>
       </div>
       <div class="sim-row">
-        <span class="sim-key">생산 유지 시 예상 손실</span>
-        <span class="sim-val red">{selected['maintain_loss_억']:.1f}억</span>
+        <span class="sim-key">Expected Loss (No Change)</span>
+        <span class="sim-val red">₩{selected['maintain_loss_억']:.1f}B</span>
       </div>
       <div class="sim-row">
-        <span class="sim-key">권고 이행 시 예상 손실</span>
-        <span class="sim-val green">{selected['optimal_loss_억']:.1f}억</span>
+        <span class="sim-key">Expected Loss (Recommended)</span>
+        <span class="sim-val green">₩{selected['optimal_loss_억']:.1f}B</span>
       </div>
       <div class="sim-row">
-        <span class="sim-key">절감 효과</span>
-        <span class="sim-val">{saving:.1f}억 ({saving_pct}%↓)</span>
+        <span class="sim-key">Savings Effect</span>
+        <span class="sim-val">₩{saving:.1f}B ({saving_pct}%↓)</span>
       </div>
     </div>
     """, unsafe_allow_html=True)
@@ -509,18 +509,18 @@ with col_sim:
 with col_chart:
     fig_loss = go.Figure()
     fig_loss.add_trace(go.Bar(
-        name='생산 유지',
+        name='Maintain Production',
         x=df['date'].dt.strftime('%m/%d'), y=df['maintain_loss_억'],
         marker_color='rgba(255,59,48,0.75)',
         marker_line_color='rgba(255,255,255,0.2)', marker_line_width=0.5,
-        hovertemplate='%{x}<br>생산유지: %{y:.1f}억<extra></extra>',
+        hovertemplate='%{x}<br>Maintain: ₩%{y:.1f}B<extra></extra>',
     ))
     fig_loss.add_trace(go.Bar(
-        name='권고 이행',
+        name='Follow Recommendation',
         x=df['date'].dt.strftime('%m/%d'), y=df['optimal_loss_억'],
         marker_color='rgba(52,199,89,0.75)',
         marker_line_color='rgba(255,255,255,0.2)', marker_line_width=0.5,
-        hovertemplate='%{x}<br>권고이행: %{y:.1f}억<extra></extra>',
+        hovertemplate='%{x}<br>Recommended: ₩%{y:.1f}B<extra></extra>',
     ))
     fig_loss.add_vline(x=selected['date'].strftime('%m/%d'),
                        line_color='rgba(0,102,204,0.5)', line_width=2)
@@ -532,7 +532,7 @@ with col_chart:
         xaxis=dict(showgrid=False, tickfont=dict(color='#7a7a7a', size=10)),
         yaxis=dict(showgrid=True, gridcolor='rgba(0,0,0,0.06)',
                    tickfont=dict(color='#7a7a7a', size=10),
-                   title='예상 손실 (억원)', title_font=dict(color='#7a7a7a', size=11)),
+                   title='Expected Loss (100M KRW)', title_font=dict(color='#7a7a7a', size=11)),
         bargap=0.2, font=dict(family='Inter'),
     )
     st.plotly_chart(fig_loss, use_container_width=True, config={'displayModeBar': False})
@@ -541,11 +541,11 @@ st.markdown('</div>', unsafe_allow_html=True)
 
 
 # ════════════════════════════════════════════════════════════════════
-# 최적 생산량 권고
+# Optimal Production Recommendation
 # ════════════════════════════════════════════════════════════════════
 st.markdown('<div class="tile-light">', unsafe_allow_html=True)
-st.markdown('<div class="section-headline">최적 생산량 권고</div>', unsafe_allow_html=True)
-st.markdown('<div class="section-tagline">Expected Loss 최소화 기반 일별 생산량 조정 권고입니다</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-headline">Optimal Production Recommendation</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-tagline">Daily production adjustment based on Expected Loss minimization</div>', unsafe_allow_html=True)
 
 _lp, col_prod, col_cum, _rp = st.columns([P, 1, 1, P])
 prod_colors = [color_map[l] for l in df['risk_level']]
@@ -561,12 +561,12 @@ with col_prod:
         textposition='top center',
         textfont=dict(color='#ffffff', size=11, family='Inter'),
         fill='tozeroy', fillcolor='rgba(41,151,255,0.25)',
-        hovertemplate='%{x}<br>권고 생산량: %{y}%<extra></extra>',
+        hovertemplate='%{x}<br>Recommended: %{y}%<extra></extra>',
     ))
     fig_prod.add_hline(y=100, line_dash='dot', line_color='rgba(255,255,255,0.5)',
-                       annotation_text='현재 100%', annotation_font_color='rgba(255,255,255,0.7)')
+                       annotation_text='Current 100%', annotation_font_color='rgba(255,255,255,0.7)')
     fig_prod.update_layout(
-        title=dict(text='일별 권고 생산량',
+        title=dict(text='Daily Recommended Production',
                    font=dict(size=14, color='#1d1d1f', family='Inter'),
                    x=0.5, xanchor='center'),
         paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='#2a2a2c',
@@ -576,7 +576,7 @@ with col_prod:
                    linecolor='rgba(255,255,255,0.1)'),
         yaxis=dict(showgrid=True, gridcolor='rgba(255,255,255,0.10)',
                    tickfont=dict(color='#cccccc', size=10), range=[0, 125],
-                   title='권고 생산량 (%)', title_font=dict(color='#cccccc', size=11)),
+                   title='Recommended Production (%)', title_font=dict(color='#cccccc', size=11)),
         font=dict(family='Inter'),
     )
     st.plotly_chart(fig_prod, use_container_width=True, config={'displayModeBar': False})
@@ -590,18 +590,18 @@ with col_cum:
         line=dict(color='#34c759', width=2.5),
         marker=dict(size=8, color='#34c759', line=dict(color='white', width=2)),
         fill='tozeroy', fillcolor='rgba(52,199,89,0.15)',
-        hovertemplate='%{x}<br>누적 절감: %{y:.1f}억<extra></extra>',
+        hovertemplate='%{x}<br>Cumulative Savings: ₩%{y:.1f}B<extra></extra>',
     ))
     fig_cum.add_annotation(
         x=df['date'].dt.strftime('%m/%d').iloc[-1], y=cumulative.iloc[-1],
-        text=f"총 {total_saving:.0f}억 절감!!",
+        text=f"Total ₩{total_saving:.0f}B Saved!!",
         showarrow=True, arrowhead=2, arrowcolor='#34c759',
         font=dict(color='#34c759', size=12, family='Inter'),
         bgcolor='rgba(42,44,42,0.8)', bordercolor='#34c759',
         borderwidth=1.5, borderpad=6,
     )
     fig_cum.update_layout(
-        title=dict(text='권고 이행 시 누적 절감액',
+        title=dict(text='Cumulative Savings (Recommended)',
                    font=dict(size=14, color='#1d1d1f', family='Inter'),
                    x=0.5, xanchor='center'),
         paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='#2a2a2c',
@@ -610,7 +610,7 @@ with col_cum:
         xaxis=dict(showgrid=False, tickfont=dict(color='#cccccc', size=10)),
         yaxis=dict(showgrid=True, gridcolor='rgba(255,255,255,0.10)',
                    tickfont=dict(color='#cccccc', size=10),
-                   title='누적 절감액 (억원)', title_font=dict(color='#cccccc', size=11)),
+                   title='Cumulative Savings (100M KRW)', title_font=dict(color='#cccccc', size=11)),
         font=dict(family='Inter'),
     )
     st.plotly_chart(fig_cum, use_container_width=True, config={'displayModeBar': False})
@@ -619,11 +619,11 @@ st.markdown('</div>', unsafe_allow_html=True)
 
 
 # ════════════════════════════════════════════════════════════════════
-# NDBI 보험금 추정
+# NDBI Insurance Payout Estimation
 # ════════════════════════════════════════════════════════════════════
 st.markdown('<div class="tile-light">', unsafe_allow_html=True)
-st.markdown('<div class="section-headline">NDBI 보험금 추정</div>', unsafe_allow_html=True)
-st.markdown('<div class="section-tagline">NDBI 트리거에 따른 보험금 산출을 추정합니다</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-headline">NDBI Insurance Payout Estimation</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-tagline">Estimates insurance payout based on NDBI trigger conditions</div>', unsafe_allow_html=True)
 
 _lp, col_ndbi, col_ndbi2, _rp = st.columns([P, 1, 1, P])
 trigger_pct = round(trigger_rate * 100, 1)
@@ -631,25 +631,25 @@ trigger_pct = round(trigger_rate * 100, 1)
 with col_ndbi:
     st.markdown(f"""
     <div class="ndbi-card">
-      <div class="ndbi-title">보험금 추정 요약</div>
+      <div class="ndbi-title">Insurance Payout Summary</div>
       <div class="ndbi-row">
-        <span class="ndbi-key">트리거 기준 (LOLP ≥ 0.7)</span>
-        <span class="ndbi-val">{trigger_days}일 / 14일</span>
+        <span class="ndbi-key">Trigger Condition (LOLP ≥ 0.7)</span>
+        <span class="ndbi-val">{trigger_days}d / 14d</span>
       </div>
       <div class="ndbi-row">
-        <span class="ndbi-key">트리거 달성률</span>
+        <span class="ndbi-key">Trigger Achievement Rate</span>
         <span class="ndbi-val blue">{trigger_pct}%</span>
       </div>
       <div class="ndbi-row">
-        <span class="ndbi-key">예상 보험금 (손실의 35%)</span>
-        <span class="ndbi-val green">{ndbi_payout:.1f}억</span>
+        <span class="ndbi-key">Est. Payout (35% of Loss)</span>
+        <span class="ndbi-val green">₩{ndbi_payout:.1f}B</span>
       </div>
       <div class="ndbi-row">
-        <span class="ndbi-key">최고 위험일 LOLP</span>
+        <span class="ndbi-key">Peak Risk Day LOLP</span>
         <span class="ndbi-val">{peak_row['prob_lolp']:.1%}</span>
       </div>
       <div style="margin-top:20px">
-        <div style="font-size:13px; color:#7a7a7a; margin-bottom:6px; font-family:Inter">트리거 달성률 {trigger_pct}%</div>
+        <div style="font-size:13px; color:#7a7a7a; margin-bottom:6px; font-family:Inter">Trigger Achievement Rate {trigger_pct}%</div>
         <div class="progress-wrap"><div class="progress-fill green" style="width:{trigger_pct}%"></div></div>
       </div>
     </div>
@@ -658,7 +658,7 @@ with col_ndbi:
 with col_ndbi2:
     fig_ndbi = go.Figure()
     fig_ndbi.add_vrect(x0=0.70, x1=1.0, fillcolor='rgba(0,102,204,0.07)', line_width=0,
-                       annotation_text='트리거 구간', annotation_font_color='#0066cc',
+                       annotation_text='Trigger Zone', annotation_font_color='#0066cc',
                        annotation_position='top left')
     colors_scatter = [color_map[l] for l in df['risk_level']]
     fig_ndbi.add_trace(go.Scatter(
@@ -668,7 +668,7 @@ with col_ndbi2:
         text=df['date'].dt.strftime('%m/%d'),
         textposition='top center',
         textfont=dict(size=9, color='#7a7a7a'),
-        hovertemplate='%{text}<br>LOLP: %{x:.1%}<br>절감액: %{y:.1f}억<extra></extra>',
+        hovertemplate='%{text}<br>LOLP: %{x:.1%}<br>Savings: ₩%{y:.1f}B<extra></extra>',
     ))
     fig_ndbi.add_vline(x=0.70, line_dash='dash', line_color='#0066cc', line_width=1.5)
     fig_ndbi.update_layout(
@@ -677,10 +677,10 @@ with col_ndbi2:
         showlegend=False,
         xaxis=dict(showgrid=True, gridcolor='rgba(0,0,0,0.06)', tickformat='.0%',
                    tickfont=dict(color='#7a7a7a', size=10),
-                   title='LOLP 예측 확률', title_font=dict(color='#7a7a7a', size=11)),
+                   title='LOLP Forecast Probability', title_font=dict(color='#7a7a7a', size=11)),
         yaxis=dict(showgrid=True, gridcolor='rgba(0,0,0,0.06)',
                    tickfont=dict(color='#7a7a7a', size=10),
-                   title='절감 가능액 (억원)', title_font=dict(color='#7a7a7a', size=11)),
+                   title='Potential Savings (100M KRW)', title_font=dict(color='#7a7a7a', size=11)),
         font=dict(family='Inter'),
     )
     st.plotly_chart(fig_ndbi, use_container_width=True, config={'displayModeBar': False})
@@ -693,7 +693,7 @@ st.markdown('</div>', unsafe_allow_html=True)
 st.markdown("""
 <div class="apple-footer">
   <div class="footer-body">
-    본 대시보드는 XGBoost LOLP 예측 모델 기반 시뮬레이션 결과입니다.
+    This dashboard presents simulation results based on the XGBoost LOLP prediction model.
   </div>
 </div>
 """, unsafe_allow_html=True)
