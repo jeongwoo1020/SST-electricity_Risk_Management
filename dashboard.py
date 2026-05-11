@@ -231,8 +231,9 @@ st.markdown("""
 
   /* ── Simulation Box ──────────────────────────────────────────────────────── */
   .sim-box {
-    max-width: 700px;
-    margin: 0 auto 48px;
+    margin: 0;
+    height: 100%;
+    box-sizing: border-box;
     background: #1a1a1c;
     border-radius: 18px;
     padding: 36px 40px;
@@ -262,8 +263,9 @@ st.markdown("""
 
   /* ── NDBI Card ────────────────────────────────────────────────────────────── */
   .ndbi-card {
-    max-width: 700px;
-    margin: 0 auto;
+    margin: 0;
+    height: 100%;
+    box-sizing: border-box;
     background: #fff;
     border-radius: 18px;
     padding: 36px 40px;
@@ -302,7 +304,6 @@ st.markdown("""
   }
   .stSlider > div > div > div > div { background: #0066cc !important; }
   .sim-box { min-height: 320px; box-sizing: border-box; }
-  .ndbi-card { min-height: 340px; box-sizing: border-box; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -443,7 +444,7 @@ st.markdown('<div class="section-headline">기업 손실 시뮬레이션</div>',
 st.markdown('<div class="section-tagline">선택 일시의 권고 이행 효과를 확인하세요</div>', unsafe_allow_html=True)
 
 # Date selector
-col_sel, col_info = st.columns([2, 3])
+col_pad, col_sel, col_info = st.columns([0.3, 1.5, 3.2])
 # col_sel, col_info = st.columns([2, 3])
 with col_sel:
     date_options = df['date'].dt.strftime('%m/%d (%a)').tolist()
@@ -524,8 +525,9 @@ with col_chart:
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
         barmode='group',
-        height=320,
-        margin=dict(l=24, r=24, t=10, b=10),
+        height=280,
+        # margin=dict(l=24, r=24, t=10, b=10),
+        margin=dict(l=24, r=24, t=4, b=4),
         legend=dict(font=dict(color='#1d1d1f', size=12), bgcolor='rgba(0,0,0,0)'),
         xaxis=dict(showgrid=False, tickfont=dict(color='#7a7a7a', size=10)),
         yaxis=dict(showgrid=True, gridcolor='rgba(0,0,0,0.06)', tickfont=dict(color='#7a7a7a', size=10), title='예상 손실 (억원)', title_font=dict(color='#7a7a7a', size=11)),
@@ -616,7 +618,7 @@ st.markdown('<div class="tile-light">', unsafe_allow_html=True)
 st.markdown('<div class="section-headline">NDBI 보험금 추정</div>', unsafe_allow_html=True)
 st.markdown('<div class="section-tagline">NDBI 트리거에 따른 보험금 산출을 추정합니다</div>', unsafe_allow_html=True)
 
-col_pad_l, col_ndbi, col_ndbi2, col_pad_r = st.columns([0.3, 1, 1, 0.3])
+col_ndbi, col_ndbi2 = st.columns([1, 1])
 with col_ndbi:
     trigger_pct = round(trigger_rate * 100, 1)
     st.markdown(f"""
@@ -664,8 +666,9 @@ with col_ndbi2:
     fig_ndbi.update_layout(
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
-        height=340,
-        margin=dict(l=24, r=24, t=10, b=10),
+        height=280,
+        # margin=dict(l=24, r=24, t=10, b=10),
+        margin=dict(l=24, r=24, t=4, b=4),
         showlegend=False,
         xaxis=dict(showgrid=True, gridcolor='rgba(0,0,0,0.06)', tickformat='.0%', tickfont=dict(color='#7a7a7a', size=10), title='LOLP 예측 확률', title_font=dict(color='#7a7a7a', size=11)),
         yaxis=dict(showgrid=True, gridcolor='rgba(0,0,0,0.06)', tickfont=dict(color='#7a7a7a', size=10), title='절감 가능액 (억원)', title_font=dict(color='#7a7a7a', size=11)),
