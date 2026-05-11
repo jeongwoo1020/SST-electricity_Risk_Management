@@ -58,7 +58,7 @@ st.markdown("""
     text-align: center;
   }
   .hero-title {
-    font-size: 56px;
+    font-size: 36px;
     font-weight: 600;
     color: #fff;
     letter-spacing: -0.28px;
@@ -138,7 +138,7 @@ st.markdown("""
 
   /* ── Section Headlines ───────────────────────────────────────────────────── */
   .section-headline {
-    font-size: 40px;
+    font-size: 26px;
     font-weight: 600;
     color: #1d1d1f;
     letter-spacing: 0;
@@ -156,7 +156,7 @@ st.markdown("""
     text-align: center;
   }
   .section-tagline {
-    font-size: 21px;
+    font-size: 15px;
     font-weight: 400;
     color: #1d1d1f;
     letter-spacing: 0;
@@ -206,7 +206,7 @@ st.markdown("""
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
-    margin: 0 5% 48px; 
+    margin: 0 0 48px;
   }
   .kpi-card {
     background: #fff;
@@ -232,7 +232,7 @@ st.markdown("""
   /* ── Simulation Box ──────────────────────────────────────────────────────── */
   .sim-box {
     margin: 0 0 0 16px;
-    height: 340px;  
+    height: 340px;
     box-sizing: border-box;
     background: #1a1a1c;
     border-radius: 18px;
@@ -316,19 +316,22 @@ def load_data():
 df = load_data()
 
 # NDBI params (insurances)
-INSURANCE_COVERAGE = 0.35   # 35% of loss covered
-TRIGGER_THRESHOLD  = 0.70   # LOLP ≥ 0.7 triggers insurance
+INSURANCE_COVERAGE = 0.35
+TRIGGER_THRESHOLD  = 0.70
 
-# ─── Derived values ────────────────────────────────────────────────────────────
-total_saving      = df['saving_억'].sum()
-avg_lolp          = df['prob_lolp'].mean()
-peak_row          = df.loc[df['prob_lolp'].idxmax()]
-danger_days       = (df['risk_level'] == 2).sum()
-caution_days      = (df['risk_level'] == 1).sum()
-safe_days         = (df['risk_level'] == 0).sum()
-trigger_days      = (df['prob_lolp'] >= TRIGGER_THRESHOLD).sum()
-trigger_rate      = trigger_days / len(df)
-ndbi_payout       = round(df.loc[df['prob_lolp'] >= TRIGGER_THRESHOLD, 'saving_억'].sum() * INSURANCE_COVERAGE, 1)
+# ─── Derived values ───────────────────────────────────────────────────────────
+total_saving  = df['saving_억'].sum()
+avg_lolp      = df['prob_lolp'].mean()
+peak_row      = df.loc[df['prob_lolp'].idxmax()]
+danger_days   = (df['risk_level'] == 2).sum()
+caution_days  = (df['risk_level'] == 1).sum()
+safe_days     = (df['risk_level'] == 0).sum()
+trigger_days  = (df['prob_lolp'] >= TRIGGER_THRESHOLD).sum()
+trigger_rate  = trigger_days / len(df)
+ndbi_payout   = round(df.loc[df['prob_lolp'] >= TRIGGER_THRESHOLD, 'saving_억'].sum() * INSURANCE_COVERAGE, 1)
+color_map     = {0: '#34c759', 1: '#ffc400', 2: '#ff3b30'}
+
+P = 0.1  # 좌우 패딩 컬럼 비율
 
 # ─── Global Nav ───────────────────────────────────────────────────────────────
 st.markdown("""
@@ -338,7 +341,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# ─── Sub Nav ──────────────────────────────────────────────────────────────────
+# ─── Hero ─────────────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="hero-section">
   <span class="hero-title">전력 수급 리스크 예측 대시보드</span>
@@ -347,65 +350,67 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# ─── KPI Strip (parchment tile) ───────────────────────────────────────────────
+# ════════════════════════════════════════════════════════════════════
+# KPI Strip
+# ════════════════════════════════════════════════════════════════════
 st.markdown('<div class="tile-light">', unsafe_allow_html=True)
 st.markdown('<div class="section-tagline">주요 지표 요약</div>', unsafe_allow_html=True)
 
-st.markdown(f"""
-<div class="kpi-grid">
-  <div class="kpi-card">
-    <div class="kpi-label">평균 LOLP</div>
-    <div class="kpi-value">{avg_lolp:.0%}</div>
-    <div class="kpi-sub">예측 기간 평균 위험 확률</div>
-  </div>
-  <div class="kpi-card">
-    <div class="kpi-label">위험일 / 주의일 / 정상일</div>
-    <div class="kpi-value" style="color:#ff3b30">{danger_days}일</div>
-    <div class="kpi-sub"">주의 {caution_days}일 &nbsp;·&nbsp; <span>정상 {safe_days}일</span></div>
-  </div>
-  <div class="kpi-card">
-    <div class="kpi-label">총 절감 가능 손실</div>
-    <div class="kpi-value" style="color:#1a8a35">{total_saving:.0f}억</div>
-    <div class="kpi-sub">권고 이행 시 절감액</div>
-  </div>
-  <div class="kpi-card">
-    <div class="kpi-label">최고 위험일</div>
-    <div class="kpi-value"">{peak_row['date'].strftime('%m/%d')}</div>
-    <div class="kpi-sub">LOLP {peak_row['prob_lolp']:.0%} · 위험</div>
-  </div>
-</div>
-""", unsafe_allow_html=True)
+_lp, _mid, _rp = st.columns([P, 1 - P * 2, P])
+with _mid:
+    st.markdown(f"""
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">평균 LOLP</div>
+        <div class="kpi-value">{avg_lolp:.0%}</div>
+        <div class="kpi-sub">예측 기간 평균 위험 확률</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">위험일 / 주의일 / 정상일</div>
+        <div class="kpi-value" style="color:#ff3b30">{danger_days}일</div>
+        <div class="kpi-sub">주의 {caution_days}일 &nbsp;·&nbsp; <span>정상 {safe_days}일</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">총 절감 가능 손실</div>
+        <div class="kpi-value" style="color:#1a8a35">{total_saving:.0f}억</div>
+        <div class="kpi-sub">권고 이행 시 절감액</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">최고 위험일</div>
+        <div class="kpi-value">{peak_row['date'].strftime('%m/%d')}</div>
+        <div class="kpi-sub">LOLP {peak_row['prob_lolp']:.0%} · 위험</div>
+      </div>
+    </div>
+    """, unsafe_allow_html=True)
+
 st.markdown('</div>', unsafe_allow_html=True)
 
-# ─── 7-Day Forecast  ───────────────────────────────────────────────
+
+# ════════════════════════════════════════════════════════════════════
+# 7-Day Forecast + LOLP Chart
+# ════════════════════════════════════════════════════════════════════
 st.markdown('<div class="tile-light">', unsafe_allow_html=True)
 st.markdown('<div class="section-headline">전력 위험 확률</div>', unsafe_allow_html=True)
 st.markdown('<div class="section-tagline">7일 간 전력 위험 LOLP 확률을 예측합니다</div>', unsafe_allow_html=True)
 
-
-# Build forecast cards (first 7 rows)
+# forecast 카드 — HTML margin으로 패딩
 forecast_7 = df.head(7)
 cards_html = '<div class="forecast-grid">'
 for _, row in forecast_7.iterrows():
     level_cls = {2: 'danger', 1: 'caution', 0: 'safe'}[row['risk_level']]
-    pct_str   = f"{row['prob_lolp']:.0%}"
-    date_str  = row['date'].strftime('%m/%d')
-    emoji     = row['risk_emoji']
     cards_html += f"""
     <div class="forecast-card {level_cls}">
-      <div class="forecast-date">{date_str}</div>
-      <span class="forecast-emoji">{emoji}</span>
-      <div class="forecast-pct {level_cls}">{pct_str}</div>
+      <div class="forecast-date">{row['date'].strftime('%m/%d')}</div>
+      <span class="forecast-emoji">{row['risk_emoji']}</span>
+      <div class="forecast-pct {level_cls}">{row['prob_lolp']:.0%}</div>
       <div class="forecast-label">{row['risk_name']}</div>
     </div>"""
 cards_html += '</div>'
 st.markdown(cards_html, unsafe_allow_html=True)
 st.markdown('<br>', unsafe_allow_html=True)
 
-# Interactive Full 14-day LOLP Chart
-color_map = {0: '#34c759', 1: '#ffc400', 2: '#ff3b30'}
+# LOLP 바 차트 — 0.1 패딩 컬럼
 bar_colors = [color_map[l] for l in df['risk_level']]
-
 fig_lolp = go.Figure()
 fig_lolp.add_trace(go.Bar(
     x=df['date'].dt.strftime('%m/%d'),
@@ -418,32 +423,38 @@ fig_lolp.add_trace(go.Bar(
     textfont=dict(color='#1d1d1f', size=11, family='Inter'),
     hovertemplate='<b>%{x}</b><br>LOLP: %{y:.1%}<extra></extra>',
 ))
-fig_lolp.add_hline(y=0.70, line_dash='dash', line_color='#111111', line_width=2, annotation_text='위험 기준 0.7', annotation_font_color='#111111')
-fig_lolp.add_hline(y=0.30, line_dash='dash', line_color='#555555', line_width=1.5, annotation_text='주의 기준 0.3', annotation_font_color='#555555')
+fig_lolp.add_hline(y=0.70, line_dash='dash', line_color='#111111', line_width=2,
+                   annotation_text='위험 기준 0.7', annotation_font_color='#111111')
+fig_lolp.add_hline(y=0.30, line_dash='dash', line_color='#555555', line_width=1.5,
+                   annotation_text='주의 기준 0.3', annotation_font_color='#555555')
 fig_lolp.add_hrect(y0=0.70, y1=1.05, fillcolor='rgba(255,59,48,0.07)', line_width=0)
 fig_lolp.add_hrect(y0=0.30, y1=0.70, fillcolor='rgba(255,196,0,0.05)', line_width=0)
 fig_lolp.update_layout(
-    paper_bgcolor='rgba(0,0,0,0)',
-    plot_bgcolor='#ffffff',
-    height=280,
-    margin=dict(l=24, r=24, t=10, b=10),
+    paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='#ffffff',
+    height=280, margin=dict(l=24, r=24, t=10, b=10),
     showlegend=False,
-    xaxis=dict(showgrid=False, tickfont=dict(color='#1d1d1f', size=11), color='#1d1d1f', linecolor='#e0e0e0'),
-    yaxis=dict(showgrid=True, gridcolor='rgba(0,0,0,0.08)', tickformat='.0%', tickfont=dict(color='#1d1d1f', size=11), range=[0, 1.12]),
-    bargap=0.25,
-    font=dict(family='Inter'),
+    xaxis=dict(showgrid=False, tickfont=dict(color='#1d1d1f', size=11), linecolor='#e0e0e0'),
+    yaxis=dict(showgrid=True, gridcolor='rgba(0,0,0,0.08)', tickformat='.0%',
+               tickfont=dict(color='#1d1d1f', size=11), range=[0, 1.12]),
+    bargap=0.25, font=dict(family='Inter'),
 )
-st.plotly_chart(fig_lolp, use_container_width=True, config={'displayModeBar': False})
+
+_lp, _mid, _rp = st.columns([P, 1 - P * 2, P])
+with _mid:
+    st.plotly_chart(fig_lolp, use_container_width=True, config={'displayModeBar': False})
+
 st.markdown('</div>', unsafe_allow_html=True)
 
-# ─── Simulation Section (light tile) ──────────────────────────────────────────
+
+# ════════════════════════════════════════════════════════════════════
+# 기업 손실 시뮬레이션
+# ════════════════════════════════════════════════════════════════════
 st.markdown('<div class="tile-light">', unsafe_allow_html=True)
 st.markdown('<div class="section-headline">기업 손실 시뮬레이션</div>', unsafe_allow_html=True)
 st.markdown('<div class="section-tagline">선택 일시의 권고 이행 효과를 확인하세요</div>', unsafe_allow_html=True)
 
-# Date selector
-col_pad, col_sel, col_info = st.columns([0.3, 1.5, 3.2])
-# col_sel, col_info = st.columns([2, 3])
+# 날짜 선택기 — 패딩 컬럼 포함
+_lp, col_sel, col_info, _rp = st.columns([P, 1.5, 3.2, P])
 with col_sel:
     date_options = df['date'].dt.strftime('%m/%d (%a)').tolist()
     selected_idx = st.selectbox(
@@ -455,7 +466,7 @@ with col_sel:
     )
 selected = df.iloc[selected_idx]
 level_labels = {2: '🔴 위험', 1: '🟡 주의', 0: '🟢 정상'}
-level_colors = {2: '#ff3b30', 1: '#ffc400', 0: '#34c759'}
+level_colors  = {2: '#ff3b30', 1: '#ffc400', 0: '#34c759'}
 
 with col_info:
     st.markdown(f"""
@@ -467,10 +478,12 @@ with col_info:
     </div>
     """, unsafe_allow_html=True)
 
-col_sim, col_chart = st.columns([1, 1])
+# 시뮬레이션 박스 + 차트 — 패딩 컬럼 포함
+_lp, col_sim, col_chart, _rp = st.columns([P, 1, 1, P])
+saving = selected['saving_억']
+saving_pct = round((1 - selected['optimal_loss_억'] / selected['maintain_loss_억']) * 100) if selected['maintain_loss_억'] > 0 else 0
+
 with col_sim:
-    saving = selected['saving_억']
-    saving_pct = round((1 - selected['optimal_loss_억'] / selected['maintain_loss_억']) * 100) if selected['maintain_loss_억'] > 0 else 0
     st.markdown(f"""
     <div class="sim-box">
       <div class="sim-title">위험 확률 {selected['prob_lolp']:.0%} 기준</div>
@@ -494,85 +507,76 @@ with col_sim:
     """, unsafe_allow_html=True)
 
 with col_chart:
-    # Loss comparison bar chart for all dates
     fig_loss = go.Figure()
     fig_loss.add_trace(go.Bar(
         name='생산 유지',
-        x=df['date'].dt.strftime('%m/%d'),
-        y=df['maintain_loss_억'],
+        x=df['date'].dt.strftime('%m/%d'), y=df['maintain_loss_억'],
         marker_color='rgba(255,59,48,0.75)',
-        marker_line_color='rgba(255,255,255,0.2)',
-        marker_line_width=0.5,
+        marker_line_color='rgba(255,255,255,0.2)', marker_line_width=0.5,
         hovertemplate='%{x}<br>생산유지: %{y:.1f}억<extra></extra>',
     ))
     fig_loss.add_trace(go.Bar(
         name='권고 이행',
-        x=df['date'].dt.strftime('%m/%d'),
-        y=df['optimal_loss_억'],
+        x=df['date'].dt.strftime('%m/%d'), y=df['optimal_loss_억'],
         marker_color='rgba(52,199,89,0.75)',
-        marker_line_color='rgba(255,255,255,0.2)',
-        marker_line_width=0.5,
+        marker_line_color='rgba(255,255,255,0.2)', marker_line_width=0.5,
         hovertemplate='%{x}<br>권고이행: %{y:.1f}억<extra></extra>',
     ))
-    # Highlight selected date
-    sel_date_str = selected['date'].strftime('%m/%d')
-    fig_loss.add_vline(
-        x=sel_date_str, line_color='rgba(0,102,204,0.5)', line_width=2
-    )
+    fig_loss.add_vline(x=selected['date'].strftime('%m/%d'),
+                       line_color='rgba(0,102,204,0.5)', line_width=2)
     fig_loss.update_layout(
-        paper_bgcolor='rgba(0,0,0,0)',
-        plot_bgcolor='rgba(0,0,0,0)',
-        barmode='group',
-        height=340,
-        # margin=dict(l=24, r=24, t=10, b=10),
+        paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)',
+        barmode='group', height=340,
         margin=dict(l=24, r=24, t=4, b=4),
         legend=dict(font=dict(color='#1d1d1f', size=12), bgcolor='rgba(0,0,0,0)'),
         xaxis=dict(showgrid=False, tickfont=dict(color='#7a7a7a', size=10)),
-        yaxis=dict(showgrid=True, gridcolor='rgba(0,0,0,0.06)', tickfont=dict(color='#7a7a7a', size=10), title='예상 손실 (억원)', title_font=dict(color='#7a7a7a', size=11)),
-        bargap=0.2,
-        font=dict(family='Inter'),
+        yaxis=dict(showgrid=True, gridcolor='rgba(0,0,0,0.06)',
+                   tickfont=dict(color='#7a7a7a', size=10),
+                   title='예상 손실 (억원)', title_font=dict(color='#7a7a7a', size=11)),
+        bargap=0.2, font=dict(family='Inter'),
     )
     st.plotly_chart(fig_loss, use_container_width=True, config={'displayModeBar': False})
 
 st.markdown('</div>', unsafe_allow_html=True)
 
-# ─── Optimal Production Section ─────────────────────────────────
+
+# ════════════════════════════════════════════════════════════════════
+# 최적 생산량 권고
+# ════════════════════════════════════════════════════════════════════
 st.markdown('<div class="tile-light">', unsafe_allow_html=True)
 st.markdown('<div class="section-headline">최적 생산량 권고</div>', unsafe_allow_html=True)
 st.markdown('<div class="section-tagline">Expected Loss 최소화 기반 일별 생산량 조정 권고입니다</div>', unsafe_allow_html=True)
 
-col_prod, col_cum = st.columns([1, 1])
+_lp, col_prod, col_cum, _rp = st.columns([P, 1, 1, P])
+prod_colors = [color_map[l] for l in df['risk_level']]
+
 with col_prod:
     fig_prod = go.Figure()
-    prod_colors = [color_map[l] for l in df['risk_level']]
     fig_prod.add_trace(go.Scatter(
-        x=df['date'].dt.strftime('%m/%d'),
-        y=df['optimal_production'],
+        x=df['date'].dt.strftime('%m/%d'), y=df['optimal_production'],
         mode='lines+markers+text',
         line=dict(color='#2997ff', width=3),
         marker=dict(size=11, color=prod_colors, line=dict(color='white', width=2.5)),
         text=[f"{v}%" for v in df['optimal_production']],
         textposition='top center',
         textfont=dict(color='#ffffff', size=11, family='Inter'),
-        fill='tozeroy',
-        fillcolor='rgba(41,151,255,0.25)',
+        fill='tozeroy', fillcolor='rgba(41,151,255,0.25)',
         hovertemplate='%{x}<br>권고 생산량: %{y}%<extra></extra>',
     ))
-    fig_prod.add_hline(y=100, line_dash='dot', line_color='rgba(255,255,255,0.5)', annotation_text='현재 100%', annotation_font_color='rgba(255,255,255,0.7)')
+    fig_prod.add_hline(y=100, line_dash='dot', line_color='rgba(255,255,255,0.5)',
+                       annotation_text='현재 100%', annotation_font_color='rgba(255,255,255,0.7)')
     fig_prod.update_layout(
-        title=dict(
-            text='일별 권고 생산량',
-            font=dict(size=14, color='#1d1d1f', family='Inter'),
-            x=0.5,
-            xanchor='center',
-        ),
-        paper_bgcolor='rgba(0,0,0,0)',
-        plot_bgcolor='#2a2a2c',
-        height=300,
-        margin=dict(l=24, r=24, t=40, b=10),
+        title=dict(text='일별 권고 생산량',
+                   font=dict(size=14, color='#1d1d1f', family='Inter'),
+                   x=0.5, xanchor='center'),
+        paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='#2a2a2c',
+        height=300, margin=dict(l=24, r=24, t=40, b=10),
         showlegend=False,
-        xaxis=dict(showgrid=False, tickfont=dict(color='#cccccc', size=10), linecolor='rgba(255,255,255,0.1)'),
-        yaxis=dict(showgrid=True, gridcolor='rgba(255,255,255,0.10)', tickfont=dict(color='#cccccc', size=10), range=[0, 125], title='권고 생산량 (%)', title_font=dict(color='#cccccc', size=11)),
+        xaxis=dict(showgrid=False, tickfont=dict(color='#cccccc', size=10),
+                   linecolor='rgba(255,255,255,0.1)'),
+        yaxis=dict(showgrid=True, gridcolor='rgba(255,255,255,0.10)',
+                   tickfont=dict(color='#cccccc', size=10), range=[0, 125],
+                   title='권고 생산량 (%)', title_font=dict(color='#cccccc', size=11)),
         font=dict(family='Inter'),
     )
     st.plotly_chart(fig_prod, use_container_width=True, config={'displayModeBar': False})
@@ -581,56 +585,50 @@ with col_cum:
     cumulative = df['saving_억'].cumsum()
     fig_cum = go.Figure()
     fig_cum.add_trace(go.Scatter(
-        x=df['date'].dt.strftime('%m/%d'),
-        y=cumulative,
+        x=df['date'].dt.strftime('%m/%d'), y=cumulative,
         mode='lines+markers',
         line=dict(color='#34c759', width=2.5),
         marker=dict(size=8, color='#34c759', line=dict(color='white', width=2)),
-        fill='tozeroy',
-        fillcolor='rgba(52,199,89,0.15)',
+        fill='tozeroy', fillcolor='rgba(52,199,89,0.15)',
         hovertemplate='%{x}<br>누적 절감: %{y:.1f}억<extra></extra>',
     ))
-    # Final value annotation
     fig_cum.add_annotation(
-        x=df['date'].dt.strftime('%m/%d').iloc[-1],
-        y=cumulative.iloc[-1],
+        x=df['date'].dt.strftime('%m/%d').iloc[-1], y=cumulative.iloc[-1],
         text=f"총 {total_saving:.0f}억 절감!!",
-        showarrow=True, arrowhead=2,
-        arrowcolor='#34c759',
+        showarrow=True, arrowhead=2, arrowcolor='#34c759',
         font=dict(color='#34c759', size=12, family='Inter'),
-        bgcolor='rgba(42,44,42,0.8)',
-        bordercolor='#34c759',
-        borderwidth=1.5,
-        borderpad=6,
+        bgcolor='rgba(42,44,42,0.8)', bordercolor='#34c759',
+        borderwidth=1.5, borderpad=6,
     )
     fig_cum.update_layout(
-        title=dict(
-            text='권고 이행 시 누적 절감액',
-            font=dict(size=14, color='#1d1d1f', family='Inter'),
-            x=0.5,
-            xanchor='center',
-        ),
-        paper_bgcolor='rgba(0,0,0,0)',
-        plot_bgcolor='#2a2a2c',
-        height=300,
-        margin=dict(l=24, r=24, t=40, b=10),
+        title=dict(text='권고 이행 시 누적 절감액',
+                   font=dict(size=14, color='#1d1d1f', family='Inter'),
+                   x=0.5, xanchor='center'),
+        paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='#2a2a2c',
+        height=300, margin=dict(l=24, r=24, t=40, b=10),
         showlegend=False,
         xaxis=dict(showgrid=False, tickfont=dict(color='#cccccc', size=10)),
-        yaxis=dict(showgrid=True, gridcolor='rgba(255,255,255,0.10)', tickfont=dict(color='#cccccc', size=10), title='누적 절감액 (억원)', title_font=dict(color='#cccccc', size=11)),
+        yaxis=dict(showgrid=True, gridcolor='rgba(255,255,255,0.10)',
+                   tickfont=dict(color='#cccccc', size=10),
+                   title='누적 절감액 (억원)', title_font=dict(color='#cccccc', size=11)),
         font=dict(family='Inter'),
     )
     st.plotly_chart(fig_cum, use_container_width=True, config={'displayModeBar': False})
 
 st.markdown('</div>', unsafe_allow_html=True)
 
-# ─── NDBI Insurance Section (light tile) ─────────────────────────────────────
+
+# ════════════════════════════════════════════════════════════════════
+# NDBI 보험금 추정
+# ════════════════════════════════════════════════════════════════════
 st.markdown('<div class="tile-light">', unsafe_allow_html=True)
 st.markdown('<div class="section-headline">NDBI 보험금 추정</div>', unsafe_allow_html=True)
 st.markdown('<div class="section-tagline">NDBI 트리거에 따른 보험금 산출을 추정합니다</div>', unsafe_allow_html=True)
 
-col_ndbi, col_ndbi2 = st.columns([1, 1])
+_lp, col_ndbi, col_ndbi2, _rp = st.columns([P, 1, 1, P])
+trigger_pct = round(trigger_rate * 100, 1)
+
 with col_ndbi:
-    trigger_pct = round(trigger_rate * 100, 1)
     st.markdown(f"""
     <div class="ndbi-card">
       <div class="ndbi-title">보험금 추정 요약</div>
@@ -658,13 +656,13 @@ with col_ndbi:
     """, unsafe_allow_html=True)
 
 with col_ndbi2:
-    # Scatter: LOLP vs saving with trigger zone
     fig_ndbi = go.Figure()
-    fig_ndbi.add_vrect(x0=0.70, x1=1.0, fillcolor='rgba(0,102,204,0.07)', line_width=0, annotation_text='트리거 구간', annotation_font_color='#0066cc', annotation_position='top left')
+    fig_ndbi.add_vrect(x0=0.70, x1=1.0, fillcolor='rgba(0,102,204,0.07)', line_width=0,
+                       annotation_text='트리거 구간', annotation_font_color='#0066cc',
+                       annotation_position='top left')
     colors_scatter = [color_map[l] for l in df['risk_level']]
     fig_ndbi.add_trace(go.Scatter(
-        x=df['prob_lolp'],
-        y=df['saving_억'],
+        x=df['prob_lolp'], y=df['saving_억'],
         mode='markers+text',
         marker=dict(size=14, color=colors_scatter, line=dict(color='white', width=1.5), opacity=0.9),
         text=df['date'].dt.strftime('%m/%d'),
@@ -674,14 +672,15 @@ with col_ndbi2:
     ))
     fig_ndbi.add_vline(x=0.70, line_dash='dash', line_color='#0066cc', line_width=1.5)
     fig_ndbi.update_layout(
-        paper_bgcolor='rgba(0,0,0,0)',
-        plot_bgcolor='rgba(0,0,0,0)',
-        height=480,
-        # margin=dict(l=24, r=24, t=10, b=10),
-        margin=dict(l=24, r=24, t=4, b=4),
+        paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)',
+        height=480, margin=dict(l=24, r=24, t=4, b=4),
         showlegend=False,
-        xaxis=dict(showgrid=True, gridcolor='rgba(0,0,0,0.06)', tickformat='.0%', tickfont=dict(color='#7a7a7a', size=10), title='LOLP 예측 확률', title_font=dict(color='#7a7a7a', size=11)),
-        yaxis=dict(showgrid=True, gridcolor='rgba(0,0,0,0.06)', tickfont=dict(color='#7a7a7a', size=10), title='절감 가능액 (억원)', title_font=dict(color='#7a7a7a', size=11)),
+        xaxis=dict(showgrid=True, gridcolor='rgba(0,0,0,0.06)', tickformat='.0%',
+                   tickfont=dict(color='#7a7a7a', size=10),
+                   title='LOLP 예측 확률', title_font=dict(color='#7a7a7a', size=11)),
+        yaxis=dict(showgrid=True, gridcolor='rgba(0,0,0,0.06)',
+                   tickfont=dict(color='#7a7a7a', size=10),
+                   title='절감 가능액 (억원)', title_font=dict(color='#7a7a7a', size=11)),
         font=dict(family='Inter'),
     )
     st.plotly_chart(fig_ndbi, use_container_width=True, config={'displayModeBar': False})
@@ -689,8 +688,9 @@ with col_ndbi2:
 st.markdown('<div style="height: 40px;"></div>', unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
+
 # ─── Footer ───────────────────────────────────────────────────────────────────
-st.markdown(f"""
+st.markdown("""
 <div class="apple-footer">
   <div class="footer-body">
     본 대시보드는 XGBoost LOLP 예측 모델 기반 시뮬레이션 결과입니다.
