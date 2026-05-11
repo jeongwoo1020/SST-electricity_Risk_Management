@@ -443,7 +443,7 @@ st.markdown('<div class="section-headline">기업 손실 시뮬레이션</div>',
 st.markdown('<div class="section-tagline">선택 일시의 권고 이행 효과를 확인하세요</div>', unsafe_allow_html=True)
 
 # Date selector
-col_pad_l, col_sel, col_info, col_pad_r = st.columns([0.3, 2, 3, 0.3])
+col_sel, col_info = st.columns([2, 3])
 # col_sel, col_info = st.columns([2, 3])
 with col_sel:
     date_options = df['date'].dt.strftime('%m/%d (%a)').tolist()
@@ -468,7 +468,7 @@ with col_info:
     </div>
     """, unsafe_allow_html=True)
 
-col_pad_l, col_sim, col_chart, col_pad_r = st.columns([0.3, 1, 1, 0.3])
+col_sim, col_chart = st.columns([1, 1])
 with col_sim:
     saving = selected['saving_억']
     saving_pct = round((1 - selected['optimal_loss_억'] / selected['maintain_loss_억']) * 100) if selected['maintain_loss_억'] > 0 else 0
@@ -541,7 +541,7 @@ st.markdown('<div class="tile-light">', unsafe_allow_html=True)
 st.markdown('<div class="section-headline">최적 생산량 권고</div>', unsafe_allow_html=True)
 st.markdown('<div class="section-tagline">Expected Loss 최소화 기반 일별 생산량 조정 권고입니다</div>', unsafe_allow_html=True)
 
-col_pad_l, col_prod, col_cum, col_pad_r = st.columns([0.3, 1, 1, 0.3])
+col_prod, col_cum = st.columns([1, 1])
 with col_prod:
     fig_prod = go.Figure()
     prod_colors = [color_map[l] for l in df['risk_level']]
