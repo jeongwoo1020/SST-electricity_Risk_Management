@@ -116,7 +116,7 @@ st.markdown("""
   /* ── Section tiles ───────────────────────────────────────────────────────── */
   .tile-light {
     background: #fff;
-    padding: 64px 64px;
+    padding: 32px 64px;
   }
   .tile-parchment {
     background: #f5f5f7;
@@ -179,8 +179,7 @@ st.markdown("""
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 12px;
-    max-width: 980px;
-    margin: 0 auto;
+    margin: 0 5%;
   }
   .forecast-card {
     background: #1a1a1c;
@@ -207,8 +206,7 @@ st.markdown("""
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
-    max-width: 980px;
-    margin: 0 auto 48px;
+    margin: 0 5% 48px; 
   }
   .kpi-card {
     background: #fff;
@@ -303,6 +301,8 @@ st.markdown("""
     color: #1d1d1f !important;
   }
   .stSlider > div > div > div > div { background: #0066cc !important; }
+  .sim-box { min-height: 320px; box-sizing: border-box; }
+  .ndbi-card { min-height: 340px; box-sizing: border-box; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -362,16 +362,16 @@ st.markdown(f"""
   <div class="kpi-card">
     <div class="kpi-label">위험일 / 주의일 / 정상일</div>
     <div class="kpi-value" style="color:#ff3b30">{danger_days}일</div>
-    <div class="kpi-sub" style="color:#ffc400">주의 {caution_days}일 &nbsp;·&nbsp; <span style="color:#34c759">정상 {safe_days}일</span></div>
+    <div class="kpi-sub"">주의 {caution_days}일 &nbsp;·&nbsp; <span>정상 {safe_days}일</span></div>
   </div>
   <div class="kpi-card">
     <div class="kpi-label">총 절감 가능 손실</div>
     <div class="kpi-value" style="color:#1a8a35">{total_saving:.0f}억</div>
-    <div class="kpi-sub-green">권고 이행 시 절감액</div>
+    <div class="kpi-sub">권고 이행 시 절감액</div>
   </div>
   <div class="kpi-card">
     <div class="kpi-label">최고 위험일</div>
-    <div class="kpi-value" style="color:#ff3b30">{peak_row['date'].strftime('%m/%d')}</div>
+    <div class="kpi-value"">{peak_row['date'].strftime('%m/%d')}</div>
     <div class="kpi-sub">LOLP {peak_row['prob_lolp']:.0%} · 위험</div>
   </div>
 </div>
@@ -443,7 +443,8 @@ st.markdown('<div class="section-headline">기업 손실 시뮬레이션</div>',
 st.markdown('<div class="section-tagline">선택 일시의 권고 이행 효과를 확인하세요</div>', unsafe_allow_html=True)
 
 # Date selector
-col_sel, col_info = st.columns([2, 3])
+col_pad_l, col_sel, col_info, col_pad_r = st.columns([0.3, 2, 3, 0.3])
+# col_sel, col_info = st.columns([2, 3])
 with col_sel:
     date_options = df['date'].dt.strftime('%m/%d (%a)').tolist()
     selected_idx = st.selectbox(
@@ -467,13 +468,17 @@ with col_info:
     </div>
     """, unsafe_allow_html=True)
 
-col_sim, col_chart = st.columns([1, 1])
+col_pad_l, col_sim, col_chart, col_pad_r = st.columns([0.3, 1, 1, 0.3])
 with col_sim:
     saving = selected['saving_억']
     saving_pct = round((1 - selected['optimal_loss_억'] / selected['maintain_loss_억']) * 100) if selected['maintain_loss_억'] > 0 else 0
     st.markdown(f"""
     <div class="sim-box">
       <div class="sim-title">위험 확률 {selected['prob_lolp']:.0%} 기준</div>
+      <div class="sim-row">
+        <span class="sim-key">AI 권고</span>
+        <span class="sim-val">생산량 {selected['optimal_production']}%로 조정</span>
+      </div>
       <div class="sim-row">
         <span class="sim-key">생산 유지 시 예상 손실</span>
         <span class="sim-val red">{selected['maintain_loss_억']:.1f}억</span>
@@ -484,11 +489,7 @@ with col_sim:
       </div>
       <div class="sim-row">
         <span class="sim-key">절감 효과</span>
-        <span class="sim-val blue">{saving:.1f}억 ({saving_pct}%↓)</span>
-      </div>
-      <div class="sim-row">
-        <span class="sim-key">AI 권고</span>
-        <span class="sim-val yellow">생산량 {selected['optimal_production']}%로 조정</span>
+        <span class="sim-val">{saving:.1f}억 ({saving_pct}%↓)</span>
       </div>
     </div>
     """, unsafe_allow_html=True)
@@ -523,7 +524,7 @@ with col_chart:
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
         barmode='group',
-        height=300,
+        height=320,
         margin=dict(l=24, r=24, t=10, b=10),
         legend=dict(font=dict(color='#1d1d1f', size=12), bgcolor='rgba(0,0,0,0)'),
         xaxis=dict(showgrid=False, tickfont=dict(color='#7a7a7a', size=10)),
@@ -540,7 +541,7 @@ st.markdown('<div class="tile-light">', unsafe_allow_html=True)
 st.markdown('<div class="section-headline">최적 생산량 권고</div>', unsafe_allow_html=True)
 st.markdown('<div class="section-tagline">Expected Loss 최소화 기반 일별 생산량 조정 권고입니다</div>', unsafe_allow_html=True)
 
-col_prod, col_cum = st.columns([1, 1])
+col_pad_l, col_prod, col_cum, col_pad_r = st.columns([0.3, 1, 1, 0.3])
 with col_prod:
     fig_prod = go.Figure()
     prod_colors = [color_map[l] for l in df['risk_level']]
@@ -612,10 +613,10 @@ st.markdown('</div>', unsafe_allow_html=True)
 
 # ─── NDBI Insurance Section (light tile) ─────────────────────────────────────
 st.markdown('<div class="tile-light">', unsafe_allow_html=True)
-st.markdown('<div class="section-headline">🛡 NDBI 보험금 추정</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-headline">NDBI 보험금 추정</div>', unsafe_allow_html=True)
 st.markdown('<div class="section-tagline">NDBI 트리거에 따른 보험금 산출을 추정합니다</div>', unsafe_allow_html=True)
 
-col_ndbi, col_ndbi2 = st.columns([1, 1])
+col_pad_l, col_ndbi, col_ndbi2, col_pad_r = st.columns([0.3, 1, 1, 0.3])
 with col_ndbi:
     trigger_pct = round(trigger_rate * 100, 1)
     st.markdown(f"""
@@ -663,7 +664,7 @@ with col_ndbi2:
     fig_ndbi.update_layout(
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
-        height=320,
+        height=340,
         margin=dict(l=24, r=24, t=10, b=10),
         showlegend=False,
         xaxis=dict(showgrid=True, gridcolor='rgba(0,0,0,0.06)', tickformat='.0%', tickfont=dict(color='#7a7a7a', size=10), title='LOLP 예측 확률', title_font=dict(color='#7a7a7a', size=11)),
