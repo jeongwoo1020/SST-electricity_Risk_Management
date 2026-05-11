@@ -270,7 +270,6 @@ st.markdown("""
     border-radius: 18px;
     padding: 36px 40px;
     border: 1px solid #e0e0e0;
-    box-shadow: rgba(0, 0, 0, 0.22) 3px 5px 30px 0;
   }
   .ndbi-title { font-size: 21px; font-weight: 600; color: #1d1d1f; letter-spacing: -0.374px; margin-bottom: 24px; }
   .ndbi-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; border-bottom: 1px solid rgba(0,0,0,0.06); padding-bottom: 14px; }
@@ -561,6 +560,12 @@ with col_prod:
     ))
     fig_prod.add_hline(y=100, line_dash='dot', line_color='rgba(255,255,255,0.5)', annotation_text='현재 100%', annotation_font_color='rgba(255,255,255,0.7)')
     fig_prod.update_layout(
+        title=dict(
+            text='일별 권고 생산량',
+            font=dict(size=14, color='#1d1d1f', family='Inter'),
+            x=0.5,
+            xanchor='center',
+        ),
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='#2a2a2c',
         height=300,
@@ -599,6 +604,12 @@ with col_cum:
         borderpad=6,
     )
     fig_cum.update_layout(
+        title=dict(
+            text='권고 이행 시 누적 절감액',
+            font=dict(size=14, color='#1d1d1f', family='Inter'),
+            x=0.5,
+            xanchor='center',
+        ),
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='#2a2a2c',
         height=300,
