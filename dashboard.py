@@ -12,10 +12,9 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# ─── Color Update: Samsung Blue & Sky Blue ──────────────────────────────────
+# ─── Color & CSS Update (Layout strictly maintained) ───────────────────────
 st.markdown("""
 <style>
-  /* Font */
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
 
   html, body, [class*="css"] {
@@ -23,7 +22,6 @@ st.markdown("""
     background: linear-gradient(to bottom, #DAEEF8, #EEF6FB); /* Slide BG (body) */
   }
 
-  /* Hide streamlit chrome */
   #MainMenu, footer, header { visibility: hidden; }
   .block-container { padding: 0 !important; max-width: 100% !important; }
 
@@ -38,7 +36,6 @@ st.markdown("""
     position: sticky;
     top: 0;
     z-index: 1000;
-    border-bottom: 2px solid #1557C0;
   }
   .nav-brand {
     font-size: 18px;
@@ -57,12 +54,11 @@ st.markdown("""
     background: linear-gradient(135deg, #87CEEB, #B0DEF0); /* Sky Blue Gradient */
     padding: 64px 48px 48px;
     text-align: center;
-    border-bottom: 1px solid #1557C0;
   }
   .hero-title {
     font-size: 36px;
     font-weight: 600;
-    color: #1A2744; /* Dark Navy for contrast on light sky */
+    color: #1A2744; /* Dark Navy for readability */
     letter-spacing: -0.28px;
     line-height: 1.07;
     margin: 0 0 12px;
@@ -84,14 +80,13 @@ st.markdown("""
     font-weight: 400;
     padding: 8px 22px;
     border-radius: 9999px;
-    letter-spacing: -0.224px;
   }
 
   /* ── Sub-Nav ────────────────────────────────────────────────────────────── */
   .sub-nav {
-    background: rgba(255, 255, 255, 0.85); /* White background for visibility */
+    background: rgba(255, 255, 255, 0.85);
     backdrop-filter: saturate(180%) blur(20px);
-    border-bottom: 1px solid #1557C0;
+    border-bottom: 1px solid rgba(21, 87, 192, 0.1);
     padding: 0 48px;
     height: 52px;
     display: flex;
@@ -105,23 +100,19 @@ st.markdown("""
     font-size: 21px;
     font-weight: 600;
     color: #1A2744;
-    letter-spacing: 0.231px;
   }
 
-  /* ── Section tiles (White BG with Samsung Blue divider) ─────────────────── */
-  .tile-light {
+  /* ── Section Tiles (White Background + Blue Divider) ────────────────────── */
+  .tile-light, .tile-parchment {
     background: #FFFFFF; /* 배경은 흰 배경 */
     padding: 32px 64px;
     border-top: 4px solid #1557C0; /* Section divider line */
-  }
-  .tile-parchment {
-    background: #FFFFFF;
-    padding: 64px 64px;
-    border-top: 4px solid #1557C0;
+    margin-bottom: 2px;
   }
   .tile-dark {
     background: #1A2744;
     padding: 64px 64px;
+    border-top: 4px solid #1557C0;
   }
 
   /* ── Section Headlines ───────────────────────────────────────────────────── */
@@ -130,64 +121,62 @@ st.markdown("""
     font-weight: 600;
     color: #1A2744;
     text-align: center;
-    margin-bottom: 8px;
+    margin: 0 0 8px;
+  }
+  .section-tagline {
+    font-size: 15px;
+    color: #1557C0;
+    text-align: center;
+    margin: 0 0 48px;
   }
 
-  /* ── Forecast Weather Row ─────────────────────────────────────────────────── */
+  /* ── Forecast & KPI ──────────────────────────────────────────────────────── */
   .forecast-card {
-    background: #F8FAFC;
+    background: #FFFFFF;
     border-radius: 18px;
     padding: 20px 12px;
     text-align: center;
     border: 1px solid #E2E8F0;
   }
-  .forecast-card.danger { border-color: #FF3B30; background: #FFF5F5; }
-  .forecast-card.caution { border-color: #F5A623; background: #FFFAF0; } /* Orange accent */
-  .forecast-card.safe { border-color: #34C759; background: #F0FFF4; }
-  .forecast-pct.caution { color: #F5A623; } /* Orange accent */
+  .forecast-card.danger { border-color: #FF3B30; }
+  .forecast-card.caution { border-color: #F5A623; } /* Orange accent */
+  .forecast-card.safe { border-color: #34C759; }
+  .forecast-pct.caution { color: #F5A623; }
 
-  /* ── KPI Metric Cards ─────────────────────────────────────────────────────── */
   .kpi-card {
     background: #fff;
-    border: 1px solid #1557C0; /* Samsung Blue border */
+    border: 1px solid #E2E8F0;
     border-radius: 18px;
     padding: 24px;
     text-align: center;
   }
   .kpi-value { font-size: 34px; font-weight: 600; color: #1557C0; }
 
-  /* ── Simulation Box ──────────────────────────────────────────────────────── */
+  /* ── Simulation & NDBI ───────────────────────────────────────────────────── */
   .sim-box {
-    background: #1A2744; /* Dark Navy */
+    background: #1A2744;
     border-radius: 18px;
     padding: 36px 40px;
     border: 1px solid #1557C0;
   }
+  .sim-val.green { color: #34C759; }
   .sim-val.blue { color: #87CEEB; }
 
-  .recommend-pill {
-    background: #1557C0; /* Samsung Blue */
-    color: #fff;
-    padding: 11px 22px;
-    border-radius: 9999px;
-  }
-
-  /* ── NDBI Card ────────────────────────────────────────────────────────────── */
   .ndbi-card {
     background: #fff;
     border-radius: 18px;
     padding: 36px 40px;
-    border: 2px solid #1557C0;
+    border: 1px solid #1557C0;
   }
   .ndbi-val.blue { color: #1557C0; }
 
-  /* ── Progress Bar ─────────────────────────────────────────────────────────── */
-  .progress-fill { height: 100%; border-radius: 9999px; background: #1557C0; }
+  .progress-fill.green { background: #34C759; }
+  .progress-fill { background: #1557C0; }
 
 </style>
 """, unsafe_allow_html=True)
 
-# ─── Data ────────────────────────────────────────────────────────────────────
+# ─── Data (Same as original) ────────────────────────────────────────────────
 @st.cache_data
 def load_data():
     df = pd.read_csv('dashboard_data.csv')
@@ -198,7 +187,7 @@ df = load_data()
 INSURANCE_COVERAGE = 0.35
 TRIGGER_THRESHOLD  = 0.70
 
-# ─── Derived values ───────────────────────────────────────────────────────────
+# ─── Derived Values ─────────────────────────────────────────────────────────
 total_saving  = df['saving_억'].sum()
 avg_lolp      = df['prob_lolp'].mean()
 peak_row      = df.loc[df['prob_lolp'].idxmax()]
@@ -208,28 +197,29 @@ safe_days     = (df['risk_level'] == 0).sum()
 trigger_days  = (df['prob_lolp'] >= TRIGGER_THRESHOLD).sum()
 trigger_rate  = trigger_days / len(df)
 ndbi_payout   = round(df.loc[df['prob_lolp'] >= TRIGGER_THRESHOLD, 'saving_억'].sum() * INSURANCE_COVERAGE, 1)
-color_map     = {0: '#34c759', 1: '#F5A623', 2: '#ff3b30'} # Orange accent for Caution
+color_map     = {0: '#34c759', 1: '#F5A623', 2: '#ff3b30'} # Orange for Caution
 
 P = 0.1 
 
-# ─── Global Nav (Dark Navy) ──────────────────────────────────────────────────
+# ─── Global Nav ──────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="global-nav">
   <span class="nav-brand">SAMSUNG ENERGY AI</span>
-  <span class="nav-meta">XGBoost LOLP Prediction System</span>
+  <span class="nav-meta">XGBoost LOLP Prediction · Enterprise Risk</span>
 </div>
 """, unsafe_allow_html=True)
 
-# ─── Hero (Sky Blue Gradient) ────────────────────────────────────────────────
+# ─── Hero ─────────────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="hero-section">
-  <span class="hero-title">Electricity Supply Risk Prediction Dashboard</span>
-  <span class="hero-subtitle"><br>Advanced Risk Management Architecture</span>
+  <span class="hero-title">Electricity Supply Risk Prediction</span>
+  <span class="hero-subtitle"><br>Dynamic Analysis for Sustainable Energy</span>
 </div>
 """, unsafe_allow_html=True)
 
-# ─── KPI Strip (White BG, Blue Accents) ──────────────────────────────────────
+# ─── KPI Strip ────────────────────────────────────────────────────────────────
 st.markdown('<div class="tile-light">', unsafe_allow_html=True)
+st.markdown('<div class="section-headline">Key Metrics Summary</div>', unsafe_allow_html=True)
 _lp, _mid, _rp = st.columns([P, 1 - P * 2, P])
 with _mid:
     st.markdown(f"""
@@ -243,7 +233,7 @@ with _mid:
         <div class="kpi-value" style="color:#ff3b30">{danger_days}d</div>
       </div>
       <div class="kpi-card">
-        <div class="kpi-label">Total Savings</div>
+        <div class="kpi-label">Total Reducible Loss</div>
         <div class="kpi-value" style="color:#1557C0">₩{total_saving:.0f}B</div>
       </div>
       <div class="kpi-card">
@@ -271,7 +261,7 @@ for _, row in forecast_7.iterrows():
 cards_html += '</div>'
 st.markdown(cards_html, unsafe_allow_html=True)
 
-# LOLP Chart with Samsung Blue theme
+# Plotly Chart (Using Samsung Blue colors)
 bar_colors = [color_map[l] for l in df['risk_level']]
 fig_lolp = go.Figure(go.Bar(x=df['date'].dt.strftime('%m/%d'), y=df['prob_lolp'], marker_color=bar_colors))
 fig_lolp.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='white', height=280, showlegend=False)
@@ -279,33 +269,33 @@ _lp, _mid, _rp = st.columns([P, 1 - P * 2, P])
 with _mid: st.plotly_chart(fig_lolp, use_container_width=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
-# ─── Simulation Section (Dark Navy Box) ──────────────────────────────────────
+# ─── Simulation Section ───────────────────────────────────────────────────────
 st.markdown('<div class="tile-light">', unsafe_allow_html=True)
 st.markdown('<div class="section-headline">Enterprise Loss Simulation</div>', unsafe_allow_html=True)
 _lp, _sim_pad, col_sel, col_info, _rp = st.columns([P, 0.05, 1.45, 3.2, P])
 with col_sel:
-    selected_idx = st.selectbox("Date", range(len(df)), format_func=lambda i: df.iloc[i]['date'].strftime('%m/%d'), index=0)
+    selected_idx = st.selectbox("Select Date", range(len(df)), format_func=lambda i: df.iloc[i]['date'].strftime('%m/%d'), index=0)
 selected = df.iloc[selected_idx]
 
 _lp, _sim_pad, col_sim, col_chart, _rp = st.columns([P, 0.05, 1, 1, P])
 with col_sim:
     st.markdown(f"""
     <div class="sim-box">
-      <div class="sim-title" style="color:#FFF">Risk Prob: {selected['prob_lolp']:.0%}</div>
-      <div class="sim-row"><span class="sim-key">Loss (No Change)</span><span class="sim-val red">₩{selected['maintain_loss_억']:.1f}B</span></div>
+      <div class="sim-title" style="color:#FFF">Risk Probability: {selected['prob_lolp']:.0%}</div>
+      <div class="sim-row"><span class="sim-key">Maintain Loss</span><span class="sim-val red">₩{selected['maintain_loss_억']:.1f}B</span></div>
       <div class="sim-row"><span class="sim-key">Savings Effect</span><span class="sim-val" style="color:#F5A623">₩{selected['saving_억']:.1f}B</span></div>
     </div>
     """, unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
-# ─── NDBI Section (Samsung Blue Accents) ─────────────────────────────────────
+# ─── NDBI Section ──────────────────────────────────────────────────────────────
 st.markdown('<div class="tile-light">', unsafe_allow_html=True)
 st.markdown('<div class="section-headline">NDBI Insurance Payout Estimation</div>', unsafe_allow_html=True)
 _lp, col_ndbi, col_ndbi2, _rp = st.columns([P, 1, 1, P])
 with col_ndbi:
     st.markdown(f"""
     <div class="ndbi-card">
-      <div class="ndbi-title">Insurance Summary</div>
+      <div class="ndbi-title">Insurance Payout</div>
       <div class="ndbi-row"><span class="ndbi-key">Est. Payout</span><span class="ndbi-val blue">₩{ndbi_payout:.1f}B</span></div>
       <div class="progress-wrap"><div class="progress-fill" style="width:{(ndbi_payout/total_saving)*100}%"></div></div>
     </div>
