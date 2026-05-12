@@ -589,15 +589,15 @@ with col_cum:
         mode='lines+markers',
         line=dict(color='#1557C0', width=2.5),
         marker=dict(size=8, color='#1557C0', line=dict(color='white', width=2)),
-        fill='tozeroy', fillcolor='rgba(52,199,89,0.15)',
+        fill='tozeroy', fillcolor='rgba(21,87,192,0.15)',
         hovertemplate='%{x}<br>Cumulative Savings: ₩%{y:.1f}B<extra></extra>',
     ))
     fig_cum.add_annotation(
         x=df['date'].dt.strftime('%m/%d').iloc[-1], y=cumulative.iloc[-1],
         text=f"Total ₩{total_saving:.0f}B Saved!!",
-        showarrow=True, arrowhead=2, arrowcolor='#34c759',
-        font=dict(color='#34c759', size=12, family='Inter'),
-        bgcolor='rgba(42,44,42,0.8)', bordercolor='#34c759',
+        showarrow=True, arrowhead=2, arrowcolor='#1557C0',
+        font=dict(color='#1557C0', size=12, family='Inter'),
+        bgcolor='rgba(42,44,42,0.8)', bordercolor='#1557C0',
         borderwidth=1.5, borderpad=6,
     )
     fig_cum.update_layout(
