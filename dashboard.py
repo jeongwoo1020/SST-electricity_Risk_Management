@@ -24,7 +24,7 @@ st.markdown("""
   }
   html, body, .stApp, [data-testid="stAppViewContainer"], [class*="css"] {
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
-    background-color: #f5f5f7 !important;
+    background-color: #FFFFFF !important;
     color: #1d1d1f !important;
   }
   
