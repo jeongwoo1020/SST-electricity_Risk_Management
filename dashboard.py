@@ -12,7 +12,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# ─── Apple Design System CSS (Colors Updated to Samsung/Sky Blue) ──────────────
+# ─── Samsung & Sky Blue Theme CSS (Layout Strictly Maintained) ───────────────
 st.markdown("""
 <style>
   /* Font */
@@ -20,14 +20,14 @@ st.markdown("""
 
   html, body, [class*="css"] {
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    background-color: #EEF6FB; /* Light Sky Blue */
+    background-color: #EEF6FB; /* Light Sky Blue BG */
   }
 
   /* Hide streamlit chrome */
   #MainMenu, footer, header { visibility: hidden; }
   .block-container { padding: 0 !important; max-width: 100% !important; }
 
-  /* ── Global Nav ── */
+  /* ── Global Nav (Dark Navy) ── */
   .global-nav {
     background: #1A2744; /* Dark Navy */
     padding: 0 32px;
@@ -42,16 +42,16 @@ st.markdown("""
   .nav-brand {
     font-size: 18px;
     font-weight: 600;
-    color: #fff;
+    color: #FFFFFF;
     letter-spacing: -0.12px;
   }
   .nav-meta {
     font-size: 12px;
-    color: #B0DEF0; /* Light Sky */
+    color: #B0DEF0;
     letter-spacing: -0.12px;
   }
 
-  /* ── Hero Section ── */
+  /* ── Hero Section (Samsung Blue) ── */
   .hero-section {
     background: #1557C0; /* Samsung Blue */
     padding: 64px 48px 48px;
@@ -60,7 +60,7 @@ st.markdown("""
   .hero-title {
     font-size: 36px;
     font-weight: 600;
-    color: #fff;
+    color: #FFFFFF;
     letter-spacing: -0.28px;
     line-height: 1.07;
     margin: 0 0 12px;
@@ -77,7 +77,7 @@ st.markdown("""
     display: inline-block;
     background: transparent;
     border: 1px solid #B0DEF0;
-    color: #FFFFFF;
+    color: #B0DEF0;
     font-size: 14px;
     font-weight: 400;
     padding: 8px 22px;
@@ -87,10 +87,10 @@ st.markdown("""
 
   /* ── Sub-Nav ── */
   .sub-nav {
-    background: rgba(218, 238, 248, 0.85); /* Frost Sky */
+    background: rgba(238, 246, 251, 0.85); /* Frosted Sky */
     backdrop-filter: saturate(180%) blur(20px);
     -webkit-backdrop-filter: saturate(180%) blur(20px);
-    border-bottom: 1px solid rgba(21, 87, 192, 0.1);
+    border-bottom: 1px solid rgba(21, 87, 192, 0.08);
     padding: 0 48px;
     height: 52px;
     display: flex;
@@ -115,11 +115,11 @@ st.markdown("""
 
   /* ── Section tiles ── */
   .tile-light {
-    background: #fff;
+    background: #FFFFFF;
     padding: 32px 64px;
   }
   .tile-parchment {
-    background: #DAEEF8; /* Pale Sky */
+    background: #EEF6FB;
     padding: 64px 64px;
   }
   .tile-dark {
@@ -129,11 +129,6 @@ st.markdown("""
   .tile-dark-2 {
     background: #1c2a4a;
     padding: 64px 64px;
-  }
-
-  /* ── Chart wrapper ── */
-  .chart-wrap {
-    padding: 0 16px;
   }
 
   /* ── Section Headlines ── */
@@ -149,7 +144,7 @@ st.markdown("""
   .section-headline-dark {
     font-size: 40px;
     font-weight: 600;
-    color: #fff;
+    color: #FFFFFF;
     letter-spacing: 0;
     line-height: 1.10;
     margin: 0 0 8px;
@@ -158,16 +153,7 @@ st.markdown("""
   .section-tagline {
     font-size: 15px;
     font-weight: 400;
-    color: #1557C0;
-    letter-spacing: 0;
-    line-height: 1.4;
-    text-align: center;
-    margin: 0 0 48px;
-  }
-  .section-tagline-dark {
-    font-size: 21px;
-    font-weight: 400;
-    color: #B0DEF0;
+    color: #1A2744;
     letter-spacing: 0;
     line-height: 1.4;
     text-align: center;
@@ -182,20 +168,17 @@ st.markdown("""
     margin: 0 5%;
   }
   .forecast-card {
-    background: #1c2a4a;
+    background: #1A2744;
     border-radius: 18px;
     padding: 20px 12px;
     text-align: center;
-    border: 1px solid rgba(135, 206, 235, 0.2);
-    transition: transform 0.15s ease;
+    border: 1px solid rgba(255,255,255,0.06);
   }
-  .forecast-card:hover { transform: scale(1.02); }
   .forecast-card.danger { border-color: rgba(255, 59, 48, 0.35); background: #2d1616; }
   .forecast-card.caution { border-color: rgba(245, 166, 35, 0.35); background: #2d2610; }
   .forecast-card.safe { border-color: rgba(52, 199, 89, 0.35); background: #122415; }
-  .forecast-date { font-size: 13px; font-weight: 600; color: #B0DEF0; letter-spacing: -0.12px; margin-bottom: 10px; }
-  .forecast-emoji { font-size: 28px; margin-bottom: 8px; display: block; }
-  .forecast-pct { font-size: 22px; font-weight: 700; letter-spacing: -0.28px; margin-bottom: 4px; }
+  .forecast-date { font-size: 13px; font-weight: 600; color: #B0DEF0; margin-bottom: 10px; }
+  .forecast-pct { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
   .forecast-pct.danger { color: #ff3b30; }
   .forecast-pct.caution { color: #F5A623; } /* Orange Accent */
   .forecast-pct.safe { color: #34c759; }
@@ -209,75 +192,49 @@ st.markdown("""
     margin: 0 0 48px;
   }
   .kpi-card {
-    background: #fff;
-    border: 1px solid #B0DEF0;
+    background: #FFFFFF;
+    border: 1px solid #DAEEF8;
     border-radius: 18px;
     padding: 24px;
     text-align: center;
   }
-  .kpi-card-dark {
-    background: #1A2744;
-    border: 1px solid rgba(135, 206, 235, 0.1);
-    border-radius: 18px;
-    padding: 24px;
-    text-align: center;
-  }
-  .kpi-label { font-size: 13px; font-weight: 400; color: #1557C0; letter-spacing: -0.12px; margin-bottom: 8px; }
-  .kpi-value { font-size: 34px; font-weight: 600; color: #1A2744; letter-spacing: -0.374px; line-height: 1.47; }
-  .kpi-value-dark { font-size: 34px; font-weight: 600; color: #fff; letter-spacing: -0.374px; line-height: 1.47; }
-  .kpi-sub { font-size: 13px; font-weight: 400; color: #7a7a7a; margin-top: 4px; }
-  .kpi-sub-green { font-size: 13px; font-weight: 600; color: #34c759; margin-top: 4px; }
-  .kpi-sub-red { font-size: 13px; font-weight: 600; color: #ff3b30; margin-top: 4px; }
+  .kpi-label { font-size: 13px; font-weight: 400; color: #1557C0; margin-bottom: 8px; }
+  .kpi-value { font-size: 34px; font-weight: 600; color: #1A2744; line-height: 1.47; }
 
   /* ── Simulation Box ── */
   .sim-box {
-    margin: 0;
-    height: 340px;
-    box-sizing: border-box;
     background: #1A2744;
     border-radius: 18px;
     padding: 36px 40px;
-    border: 1px solid rgba(135, 206, 235, 0.1);
+    border: 1px solid rgba(255,255,255,0.06);
   }
-  .sim-title { font-size: 21px; font-weight: 600; color: #fff; letter-spacing: -0.374px; margin-bottom: 24px; }
+  .sim-title { font-size: 21px; font-weight: 600; color: #FFFFFF; margin-bottom: 24px; }
   .sim-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 14px; }
-  .sim-row:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-  .sim-key { font-size: 15px; font-weight: 400; color: #B0DEF0; letter-spacing: -0.374px; }
-  .sim-val { font-size: 22px; font-weight: 600; color: #fff; letter-spacing: -0.374px; }
+  .sim-key { font-size: 15px; color: #B0DEF0; }
+  .sim-val { font-size: 22px; font-weight: 600; color: #FFFFFF; }
   .sim-val.red { color: #ff3b30; }
   .sim-val.green { color: #34c759; }
-  .sim-val.blue { color: #87CEEB; }
 
   .recommend-pill {
-    display: inline-block;
     background: #1557C0;
-    color: #fff;
-    font-size: 15px;
-    font-weight: 400;
+    color: #FFFFFF;
     padding: 11px 22px;
     border-radius: 9999px;
-    letter-spacing: -0.374px;
     margin-top: 24px;
-    text-align: center;
   }
 
   /* ── NDBI Card ── */
   .ndbi-card {
-    margin: 0 0 0 16px;
-    height: 100%;
-    box-sizing: border-box;
-    background: #fff;
+    background: #FFFFFF;
     border-radius: 18px;
     padding: 36px 40px;
-    border: 1px solid #B0DEF0;
+    border: 1px solid #DAEEF8;
   }
-  .ndbi-title { font-size: 21px; font-weight: 600; color: #1A2744; letter-spacing: -0.374px; margin-bottom: 24px; }
-  .ndbi-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; border-bottom: 1px solid rgba(21, 87, 192, 0.1); padding-bottom: 14px; }
-  .ndbi-row:last-of-type { border-bottom: none; }
-  .ndbi-key { font-size: 15px; font-weight: 400; color: #1557C0; letter-spacing: -0.374px; }
-  .ndbi-val { font-size: 22px; font-weight: 600; color: #1A2744; letter-spacing: -0.374px; }
+  .ndbi-title { font-size: 21px; font-weight: 600; color: #1A2744; margin-bottom: 24px; }
+  .ndbi-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; border-bottom: 1px solid rgba(0,0,0,0.06); padding-bottom: 14px; }
+  .ndbi-key { font-size: 15px; color: #1557C0; }
+  .ndbi-val { font-size: 22px; font-weight: 600; color: #1A2744; }
   .ndbi-val.blue { color: #1557C0; }
-  .ndbi-val.green { color: #1a8a35; }
 
   /* ── Progress Bar ── */
   .progress-wrap { background: #DAEEF8; border-radius: 9999px; height: 8px; overflow: hidden; margin-top: 8px; }
@@ -286,25 +243,22 @@ st.markdown("""
 
   /* ── Footer ── */
   .apple-footer {
-    background: #DAEEF8;
+    background: #EEF6FB;
     padding: 40px 48px 24px;
-    border-top: 1px solid #B0DEF0;
+    border-top: 1px solid #DAEEF8;
   }
-  .footer-body { font-size: 12px; font-weight: 400; color: #1557C0; letter-spacing: -0.12px; line-height: 1.5; text-align: center; }
+  .footer-body { font-size: 12px; color: #1557C0; text-align: center; }
 
-  /* ── Selector dropdown style ── */
+  /* ── Selector & Slider ── */
   div[data-baseweb="select"] > div {
-    background: #fff !important;
-    border: 1px solid #B0DEF0 !important;
+    background: #FFFFFF !important;
+    border: 1px solid #DAEEF8 !important;
     border-radius: 9999px !important;
-    font-family: 'Inter', system-ui, sans-serif !important;
-    font-size: 14px !important;
     color: #1A2744 !important;
   }
   .stSlider > div > div > div > div { background: #1557C0 !important; }
 </style>
 """, unsafe_allow_html=True)
-
 
 # ─── Data ────────────────────────────────────────────────────────────────────
 @st.cache_data
@@ -314,8 +268,6 @@ def load_data():
     return df
 
 df = load_data()
-
-# NDBI params
 INSURANCE_COVERAGE = 0.35
 TRIGGER_THRESHOLD  = 0.70
 
@@ -329,7 +281,7 @@ safe_days     = (df['risk_level'] == 0).sum()
 trigger_days  = (df['prob_lolp'] >= TRIGGER_THRESHOLD).sum()
 trigger_rate  = trigger_days / len(df)
 ndbi_payout   = round(df.loc[df['prob_lolp'] >= TRIGGER_THRESHOLD, 'saving_억'].sum() * INSURANCE_COVERAGE, 1)
-color_map     = {0: '#34c759', 1: '#F5A623', 2: '#ff3b30'} # Updated Caution to Orange Accent
+color_map     = {0: '#34c759', 1: '#F5A623', 2: '#ff3b30'} # Updated Caution to Orange
 
 P = 0.1 
 
@@ -349,50 +301,24 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-
-# ════════════════════════════════════════════════════════════════════
-# KPI Strip
-# ════════════════════════════════════════════════════════════════════
+# ─── KPI Strip ────────────────────────────────────────────────────────────────
 st.markdown('<div class="tile-light">', unsafe_allow_html=True)
 st.markdown('<div class="section-headline">Key Metrics Summary</div>', unsafe_allow_html=True)
-
 _lp, _mid, _rp = st.columns([P, 1 - P * 2, P])
 with _mid:
     st.markdown(f"""
     <div class="kpi-grid">
-      <div class="kpi-card">
-        <div class="kpi-label">Average LOLP</div>
-        <div class="kpi-value">{avg_lolp:.0%}</div>
-        <div class="kpi-sub">Avg. risk probability over forecast period</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">High / Caution / Normal Days</div>
-        <div class="kpi-value" style="color:#ff3b30">{danger_days}d</div>
-        <div class="kpi-sub">Caution {caution_days}d &nbsp;·&nbsp; <span>Normal {safe_days}d</span></div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Total Reducible Loss</div>
-        <div class="kpi-value" style="color:#1a8a35">₩{total_saving:.0f}B</div>
-        <div class="kpi-sub">Savings if recommendation followed</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Peak Risk Day</div>
-        <div class="kpi-value">{peak_row['date'].strftime('%m/%d')}</div>
-        <div class="kpi-sub">LOLP {peak_row['prob_lolp']:.0%} · High Risk</div>
-      </div>
+      <div class="kpi-card"><div class="kpi-label">Average LOLP</div><div class="kpi-value">{avg_lolp:.0%}</div></div>
+      <div class="kpi-card"><div class="kpi-label">High Risk Days</div><div class="kpi-value" style="color:#ff3b30">{danger_days}d</div></div>
+      <div class="kpi-card"><div class="kpi-label">Total Reducible Loss</div><div class="kpi-value" style="color:#1557C0">₩{total_saving:.0f}B</div></div>
+      <div class="kpi-card"><div class="kpi-label">Peak Risk Day</div><div class="kpi-value">{peak_row['date'].strftime('%m/%d')}</div></div>
     </div>
     """, unsafe_allow_html=True)
-
 st.markdown('</div>', unsafe_allow_html=True)
 
-# (이하 7-Day Forecast, Simulation 등 로직은 원본 코드와 동일하여 생략하거나 동일하게 배치)
-# ════════════════════════════════════════════════════════════════════
-# 7-Day Forecast + LOLP Chart
-# ════════════════════════════════════════════════════════════════════
+# ─── 7-Day Forecast + LOLP Chart ──────────────────────────────────────────────
 st.markdown('<div class="tile-light">', unsafe_allow_html=True)
 st.markdown('<div class="section-headline">Power Risk Forecast</div>', unsafe_allow_html=True)
-st.markdown('<div class="section-tagline">7-day LOLP risk probability forecast</div>', unsafe_allow_html=True)
-
 forecast_7 = df.head(7)
 cards_html = '<div class="forecast-grid">'
 for _, row in forecast_7.iterrows():
@@ -406,17 +332,71 @@ for _, row in forecast_7.iterrows():
     </div>"""
 cards_html += '</div>'
 st.markdown(cards_html, unsafe_allow_html=True)
-st.markdown('<br>', unsafe_allow_html=True)
 
-bar_colors = [color_map[l] for l in df['risk_level']]
-fig_lolp = go.Figure()
-fig_lolp.add_trace(go.Bar(
-    x=df['date'].dt.strftime('%m/%d'), y=df['prob_lolp'], marker_color=bar_colors,
-    text=[f"{v:.0%}" for v in df['prob_lolp']], textposition='outside'
-))
+fig_lolp = go.Figure(go.Bar(x=df['date'].dt.strftime('%m/%d'), y=df['prob_lolp'], marker_color=[color_map[l] for l in df['risk_level']]))
 fig_lolp.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='#ffffff', height=280, showlegend=False)
 _lp, _mid, _rp = st.columns([P, 1 - P * 2, P])
 with _mid: st.plotly_chart(fig_lolp, use_container_width=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
-# ... (나머지 시뮬레이션 및 NDBI 섹션도 위 CSS 규칙을 따라 색상만 교체되어 렌더링됨)
+# ─── Enterprise Loss Simulation ───────────────────────────────────────────────
+st.markdown('<div class="tile-light">', unsafe_allow_html=True)
+st.markdown('<div class="section-headline">Enterprise Loss Simulation</div>', unsafe_allow_html=True)
+_lp, _sim_pad, col_sel, col_info, _rp = st.columns([P, 0.05, 1.45, 3.2, P])
+with col_sel:
+    selected_idx = st.selectbox("Date", range(len(df)), format_func=lambda i: df.iloc[i]['date'].strftime('%m/%d'), index=int(df['prob_lolp'].idxmax()))
+selected = df.iloc[selected_idx]
+
+_lp, _sim_pad, col_sim, col_chart, _rp = st.columns([P, 0.05, 1, 1, P])
+with col_sim:
+    st.markdown(f"""
+    <div class="sim-box">
+      <div class="sim-title">Risk: {selected['prob_lolp']:.0%}</div>
+      <div class="sim-row"><span class="sim-key">Maintain Loss</span><span class="sim-val red">₩{selected['maintain_loss_억']:.1f}B</span></div>
+      <div class="sim-row"><span class="sim-key">Recommended Loss</span><span class="sim-val green">₩{selected['optimal_loss_억']:.1f}B</span></div>
+      <div class="sim-row"><span class="sim-key">Savings Effect</span><span class="sim-val" style="color:#F5A623">₩{selected['saving_억']:.1f}B</span></div>
+    </div>
+    """, unsafe_allow_html=True)
+with col_chart:
+    fig_loss = go.Figure(data=[
+        go.Bar(name='Maintain', x=df['date'].dt.strftime('%m/%d'), y=df['maintain_loss_억'], marker_color='#ff3b30'),
+        go.Bar(name='Follow', x=df['date'].dt.strftime('%m/%d'), y=df['optimal_loss_억'], marker_color='#34c759')
+    ])
+    fig_loss.update_layout(barmode='group', height=340, paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+    st.plotly_chart(fig_loss, use_container_width=True)
+st.markdown('</div>', unsafe_allow_html=True)
+
+# ─── Optimal Production Recommendation ───────────────────────────────────────
+st.markdown('<div class="tile-light">', unsafe_allow_html=True)
+st.markdown('<div class="section-headline">Optimal Production Recommendation</div>', unsafe_allow_html=True)
+_lp, col_prod, col_cum, _rp = st.columns([P, 1, 1, P])
+with col_prod:
+    fig_prod = go.Figure(go.Scatter(x=df['date'].dt.strftime('%m/%d'), y=df['optimal_production'], mode='lines+markers', line=dict(color='#1557C0')))
+    fig_prod.update_layout(height=300, paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='#1A2744')
+    st.plotly_chart(fig_prod, use_container_width=True)
+with col_cum:
+    fig_cum = go.Figure(go.Scatter(x=df['date'].dt.strftime('%m/%d'), y=df['saving_억'].cumsum(), fill='tozeroy', line=dict(color='#34c759')))
+    fig_cum.update_layout(height=300, paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='#1A2744')
+    st.plotly_chart(fig_cum, use_container_width=True)
+st.markdown('</div>', unsafe_allow_html=True)
+
+# ─── NDBI Insurance Payout Estimation ─────────────────────────────────────────
+st.markdown('<div class="tile-light">', unsafe_allow_html=True)
+st.markdown('<div class="section-headline">NDBI Insurance Payout Estimation</div>', unsafe_allow_html=True)
+_lp, col_ndbi, col_ndbi2, _rp = st.columns([P, 1, 1, P])
+with col_ndbi:
+    st.markdown(f"""
+    <div class="ndbi-card">
+      <div class="ndbi-title">Payout Summary</div>
+      <div class="ndbi-row"><span class="ndbi-key">Est. Payout</span><span class="ndbi-val blue">₩{ndbi_payout:.1f}B</span></div>
+      <div class="progress-wrap"><div class="progress-fill" style="width:{(ndbi_payout/total_saving)*100}%"></div></div>
+    </div>
+    """, unsafe_allow_html=True)
+with col_ndbi2:
+    fig_ndbi = go.Figure(go.Scatter(x=df['prob_lolp'], y=df['saving_억'], mode='markers', marker=dict(size=14, color=[color_map[l] for l in df['risk_level']])))
+    fig_ndbi.update_layout(height=480, paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+    st.plotly_chart(fig_ndbi, use_container_width=True)
+st.markdown('</div>', unsafe_allow_html=True)
+
+# ─── Footer ───
+st.markdown('<div class="apple-footer"><div class="footer-body">XGBoost LOLP Prediction Model · Samsung Energy AI</div></div>', unsafe_allow_html=True)
