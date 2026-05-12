@@ -354,7 +354,7 @@ st.markdown("""
 # KPI Strip
 # ════════════════════════════════════════════════════════════════════
 st.markdown('<div class="tile-light">', unsafe_allow_html=True)
-st.markdown('<div class="section-tagline">Key Metrics Summary</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-headline">Key Metrics Summary</div>', unsafe_allow_html=True)
 
 _lp, _mid, _rp = st.columns([P, 1 - P * 2, P])
 with _mid:
