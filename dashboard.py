@@ -29,7 +29,7 @@ st.markdown("""
 
   /* ── Global Nav (true black) ────────────────────────────────────────────── */
   .global-nav {
-    background: #000;
+    background: #1A2744;
     padding: 0 32px;
     height: 44px;
     display: flex;
@@ -53,14 +53,14 @@ st.markdown("""
 
   /* ── Hero Section (dark tile) ────────────────────────────────────────────── */
   .hero-section {
-    background: #272729;
+    background: #DAEEF8;
     padding: 64px 48px 48px;
     text-align: center;
   }
   .hero-title {
     font-size: 36px;
     font-weight: 600;
-    color: #fff;
+    color: #1A2744;
     letter-spacing: -0.28px;
     line-height: 1.07;
     margin: 0 0 12px;
@@ -68,7 +68,7 @@ st.markdown("""
   .hero-subtitle {
     font-size: 21px;
     font-weight: 400;
-    color: #cccccc;
+    color: #1A2744;
     letter-spacing: 0;
     line-height: 1.19;
     margin: 0 0 32px;
@@ -329,7 +329,7 @@ safe_days     = (df['risk_level'] == 0).sum()
 trigger_days  = (df['prob_lolp'] >= TRIGGER_THRESHOLD).sum()
 trigger_rate  = trigger_days / len(df)
 ndbi_payout   = round(df.loc[df['prob_lolp'] >= TRIGGER_THRESHOLD, 'saving_억'].sum() * INSURANCE_COVERAGE, 1)
-color_map     = {0: '#34c759', 1: '#ffc400', 2: '#ff3b30'}
+color_map     = {0: '#1557C0', 1: '#F5A623', 2: '#ff3b30'}
 
 P = 0.1  # left/right padding column ratio
 
@@ -367,7 +367,7 @@ with _mid:
       </div>
       <div class="kpi-card">
         <div class="kpi-label">High / Caution / Normal Days</div>
-        <div class="kpi-value" style="color:#ff3b30">{danger_days}d</div>
+        <div class="kpi-value" style="color:#F5A623">{danger_days}d</div>
         <div class="kpi-sub">Caution {caution_days}d &nbsp;·&nbsp; <span>Normal {safe_days}d</span></div>
       </div>
       <div class="kpi-card">
