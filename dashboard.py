@@ -329,7 +329,7 @@ safe_days     = (df['risk_level'] == 0).sum()
 trigger_days  = (df['prob_lolp'] >= TRIGGER_THRESHOLD).sum()
 trigger_rate  = trigger_days / len(df)
 ndbi_payout   = round(df.loc[df['prob_lolp'] >= TRIGGER_THRESHOLD, 'saving_억'].sum() * INSURANCE_COVERAGE, 1)
-color_map     = {0: '#1557C0', 1: '#F5A623', 2: '#ff3b30'}
+color_map     = {0: '#34c759', 1: '#F5A623', 2: '#ff3b30'}
 
 P = 0.1  # left/right padding column ratio
 
@@ -518,7 +518,7 @@ with col_chart:
     fig_loss.add_trace(go.Bar(
         name='Follow Recommendation',
         x=df['date'].dt.strftime('%m/%d'), y=df['optimal_loss_억'],
-        marker_color='rgba(52,199,89,0.75)',
+        marker_color='rgba(176,222,240,0.75)',
         marker_line_color='rgba(255,255,255,0.2)', marker_line_width=0.5,
         hovertemplate='%{x}<br>Recommended: ₩%{y:.1f}B<extra></extra>',
     ))
@@ -555,7 +555,7 @@ with col_prod:
     fig_prod.add_trace(go.Scatter(
         x=df['date'].dt.strftime('%m/%d'), y=df['optimal_production'],
         mode='lines+markers+text',
-        line=dict(color='#2997ff', width=3),
+        line=dict(color='#1557C0', width=3),
         marker=dict(size=11, color=prod_colors, line=dict(color='white', width=2.5)),
         text=[f"{v}%" for v in df['optimal_production']],
         textposition='top center',
@@ -587,8 +587,8 @@ with col_cum:
     fig_cum.add_trace(go.Scatter(
         x=df['date'].dt.strftime('%m/%d'), y=cumulative,
         mode='lines+markers',
-        line=dict(color='#34c759', width=2.5),
-        marker=dict(size=8, color='#34c759', line=dict(color='white', width=2)),
+        line=dict(color='#1557C0', width=2.5),
+        marker=dict(size=8, color='#1557C0', line=dict(color='white', width=2)),
         fill='tozeroy', fillcolor='rgba(52,199,89,0.15)',
         hovertemplate='%{x}<br>Cumulative Savings: ₩%{y:.1f}B<extra></extra>',
     ))
@@ -650,7 +650,7 @@ with col_ndbi:
       </div>
       <div style="margin-top:20px">
         <div style="font-size:13px; color:#7a7a7a; margin-bottom:6px; font-family:Inter">Trigger Achievement Rate {trigger_pct}%</div>
-        <div class="progress-wrap"><div class="progress-fill green" style="width:{trigger_pct}%"></div></div>
+        <div class="progress-wrap"><div class="progress-fill" style="width:{trigger_pct}%; background-color: #F5A623;"></div></div>
       </div>
     </div>
     """, unsafe_allow_html=True)
