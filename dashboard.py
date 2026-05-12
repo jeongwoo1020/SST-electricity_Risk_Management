@@ -595,9 +595,9 @@ with col_cum:
     fig_cum.add_annotation(
         x=df['date'].dt.strftime('%m/%d').iloc[-1], y=cumulative.iloc[-1],
         text=f"Total ₩{total_saving:.0f}B Saved!!",
-        showarrow=True, arrowhead=2, arrowcolor='#1557C0',
-        font=dict(color='#1557C0', size=12, family='Inter'),
-        bgcolor='rgba(42,44,42,0.8)', bordercolor='#1557C0',
+        showarrow=True, arrowhead=2, arrowcolor='#cccccc',
+        font=dict(color='#cccccc', size=12, family='Inter'),
+        bgcolor='rgba(42,44,42,0.8)', bordercolor='#cccccc',
         borderwidth=1.5, borderpad=6,
     )
     fig_cum.update_layout(
