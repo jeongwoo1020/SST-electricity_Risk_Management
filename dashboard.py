@@ -15,13 +15,21 @@ st.set_page_config(
 # ─── Apple Design System CSS ─────────────────────────────────────────────────
 st.markdown("""
 <style>
+  /* Light mode */
+  :root {
+    color-scheme: light !important;
+  }
+  .stApp {
+    background-color: #FFFFFF !important;
+  }
+  html, body, .stApp, [data-testid="stAppViewContainer"], [class*="css"] {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+    background-color: #f5f5f7 !important;
+    color: #1d1d1f !important;
+  }
+  
   /* Font */
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-
-  html, body, [class*="css"] {
-    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    background-color: #f5f5f7;
-  }
 
   /* Hide streamlit chrome */
   #MainMenu, footer, header { visibility: hidden; }
