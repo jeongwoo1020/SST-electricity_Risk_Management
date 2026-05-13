@@ -190,7 +190,7 @@ st.markdown("""
     margin: 0 5%;
   }
   .forecast-card {
-    background: #1a1a1c;
+    background: #DAEEF8;
     border-radius: 18px;
     padding: 20px 12px;
     text-align: center;
@@ -201,13 +201,13 @@ st.markdown("""
   .forecast-card.danger { border-color: rgba(255, 59, 48, 0.35); background: #1f1212; }
   .forecast-card.caution { border-color: rgba(255, 196, 0, 0.35); background: #1c1a0f; }
   .forecast-card.safe { border-color: rgba(52, 199, 89, 0.35); background: #0f1c11; }
-  .forecast-date { font-size: 13px; font-weight: 600; color: #7a7a7a; letter-spacing: -0.12px; margin-bottom: 10px; }
+  .forecast-date { font-size: 13px; font-weight: 600; color: #1A2744; letter-spacing: -0.12px; margin-bottom: 10px; }
   .forecast-emoji { font-size: 28px; margin-bottom: 8px; display: block; }
   .forecast-pct { font-size: 22px; font-weight: 700; letter-spacing: -0.28px; margin-bottom: 4px; }
   .forecast-pct.danger { color: #ff3b30; }
   .forecast-pct.caution { color: #ffc400; }
   .forecast-pct.safe { color: #34c759; }
-  .forecast-label { font-size: 11px; font-weight: 400; color: #7a7a7a; }
+  .forecast-label { font-size: 11px; font-weight: 400; color: #1A2744; }
 
   /* ── KPI Metric Cards ─────────────────────────────────────────────────────── */
   .kpi-grid {
