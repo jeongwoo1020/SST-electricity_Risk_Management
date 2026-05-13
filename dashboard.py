@@ -198,9 +198,9 @@ st.markdown("""
     transition: transform 0.15s ease;
   }
   .forecast-card:hover { transform: scale(1.02); }
-  .forecast-card.danger { border-color: rgba(255, 59, 48, 0.35); background: #1f1212; }
-  .forecast-card.caution { border-color: rgba(255, 196, 0, 0.35); background: #1c1a0f; }
-  .forecast-card.safe { border-color: rgba(52, 199, 89, 0.35); background: #0f1c11; }
+  .forecast-card.danger { border-color: rgba(255, 59, 48, 0.35); background: #DAEEF8; }
+  .forecast-card.caution { border-color: rgba(255, 196, 0, 0.35); background: #DAEEF8; }
+  .forecast-card.safe { border-color: rgba(52, 199, 89, 0.35); background: #DAEEF8; }
   .forecast-date { font-size: 13px; font-weight: 600; color: #1A2744; letter-spacing: -0.12px; margin-bottom: 10px; }
   .forecast-emoji { font-size: 28px; margin-bottom: 8px; display: block; }
   .forecast-pct { font-size: 22px; font-weight: 700; letter-spacing: -0.28px; margin-bottom: 4px; }
