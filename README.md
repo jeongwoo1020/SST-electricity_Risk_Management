@@ -48,9 +48,7 @@ NOAA ENSO ONI  ──┘         │
 - ECE calibration completed
 - Lagged Pearson correlation peak: lag-4 to lag-8 days (3–10 day lead time)
 
----
-
-## 🧪 EDA Evidence
+**EDA Evidence**
 
 Three data-driven findings validate the model:
 
@@ -58,9 +56,7 @@ Three data-driven findings validate the model:
 2. **② Lead time exists** — Lagged Pearson correlation peaks at lag-4 to lag-8 days → today's SST predicts next week's grid stress
 3. **③ ENSO is the year-ahead lever** — Adding lag-1y ENSO ANOM cuts SST forecast error from ~2°C to 1.10°C, making one-year-ahead risk pricing actuarially tractable
 
----
-
-## 📈 Business Impact
+**Business Impact**
 
 | Stakeholder | Value |
 |-------------|-------|
@@ -70,7 +66,7 @@ Three data-driven findings validate the model:
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -92,9 +88,7 @@ pip install -r requirements.txt
 streamlit run dashboard.py
 ```
 
----
-
-## 📦 Dependencies
+### Dependencies
 
 ```
 streamlit==1.32.0
